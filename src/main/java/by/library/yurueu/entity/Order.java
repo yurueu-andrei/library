@@ -103,10 +103,8 @@ public class Order {
         if(getPrice() != aThat.getPrice()) {return false;}
 
         if(getUserId() == null) {
-            if(aThat.getUserId() != null) {return false;}
-        } else if(!getUserId().equals(aThat.getUserId())) { return false;}
-
-        return true;
+            return aThat.getUserId() == null;
+        } else return getUserId().equals(aThat.getUserId());
     }
 
     @Override

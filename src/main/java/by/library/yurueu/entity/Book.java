@@ -71,10 +71,8 @@ public class Book {
         if(getPagesNumber() != aThat.getPagesNumber()) {return false;}
 
         if(getImagePath() == null) {
-            if(aThat.getImagePath() != null) {return false;}
-        } else if(!getImagePath().equals(aThat.getImagePath())) { return false;}
-
-        return true;
+            return aThat.getImagePath() == null;
+        } else return getImagePath().equals(aThat.getImagePath());
     }
 
     @Override

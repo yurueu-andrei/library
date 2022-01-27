@@ -120,10 +120,8 @@ public class User {
         } else if(!getAddress().equals(aThat.getAddress())) { return false;}
 
         if(getBirthDate() == null) {
-            if(aThat.getBirthDate() != null) {return false;}
-        } else if(!getBirthDate().equals(aThat.getBirthDate())) { return false;}
-
-        return true;
+            return aThat.getBirthDate() == null;
+        } else return getBirthDate().equals(aThat.getBirthDate());
     }
 
     @Override

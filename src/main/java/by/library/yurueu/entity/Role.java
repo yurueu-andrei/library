@@ -43,10 +43,8 @@ public class Role {
         } else if(!getId().equals(aThat.getId())) { return false;}
 
         if(getRoleName() == null) {
-            if(aThat.getRoleName() != null) {return false;}
-        } else if(!getRoleName().equals(aThat.getRoleName())) { return false;}
-
-        return true;
+            return aThat.getRoleName() == null;
+        } else return getRoleName().equals(aThat.getRoleName());
     }
 
     @Override

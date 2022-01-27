@@ -86,10 +86,8 @@ public class BookCopy {
         if(getPrice() != aThat.getPrice()) {return false;}
 
         if(getBookId() == null) {
-            if(aThat.getBookId() != null) {return false;}
-        } else if(!getBookId().equals(aThat.getBookId())) { return false;}
-
-        return true;
+            return aThat.getBookId() == null;
+        } else return getBookId().equals(aThat.getBookId());
     }
 
     @Override

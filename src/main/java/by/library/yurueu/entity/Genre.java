@@ -43,10 +43,8 @@ public class Genre {
         } else if(!getId().equals(aThat.getId())) { return false;}
 
         if(getGenreName() == null) {
-            if(aThat.getGenreName() != null) {return false;}
-        } else if(!getGenreName().equals(aThat.getGenreName())) { return false;}
-
-        return true;
+            return aThat.getGenreName() == null;
+        } else return getGenreName().equals(aThat.getGenreName());
     }
 
     @Override
