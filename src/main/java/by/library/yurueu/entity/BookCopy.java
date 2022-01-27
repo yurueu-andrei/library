@@ -1,13 +1,17 @@
 package by.library.yurueu.entity;
 
+import java.time.LocalDate;
+
 public class BookCopy {
-    private long id;
-    private String registrationDate;
+    private Long id;
+    private LocalDate registrationDate;
     private int price;
     private int pricePerDay;
-    private long bookId;
+    private Long bookId;
 
-    public BookCopy(long id, String registrationDate, int price, int pricePerDay, long bookId) {
+    public BookCopy() {}
+
+    public BookCopy(Long id, LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
         this.id = id;
         this.registrationDate = registrationDate;
         this.price = price;
@@ -15,26 +19,26 @@ public class BookCopy {
         this.bookId = bookId;
     }
 
-    public BookCopy(String registrationDate, int price, int pricePerDay, long bookId) {
+    public BookCopy(LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
         this.registrationDate = registrationDate;
         this.price = price;
         this.pricePerDay = pricePerDay;
         this.bookId = bookId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getRegistrationDate() {
+    public LocalDate getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -54,11 +58,11 @@ public class BookCopy {
         this.pricePerDay = pricePerDay;
     }
 
-    public long getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
-    public void setBookId(long bookId) {
+    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
 
@@ -69,6 +73,10 @@ public class BookCopy {
 
         BookCopy aThat = (BookCopy) obj;
 
+        if(getId() == null) {
+            if(aThat.getRegistrationDate() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
+
         if(getRegistrationDate() == null) {
             if(aThat.getRegistrationDate() != null) {return false;}
         } else if(!getRegistrationDate().equals(aThat.getRegistrationDate())) { return false;}
@@ -77,7 +85,9 @@ public class BookCopy {
 
         if(getPrice() != aThat.getPrice()) {return false;}
 
-        if(getBookId() != aThat.getBookId()) {return false;}
+        if(getBookId() == null) {
+            if(aThat.getBookId() != null) {return false;}
+        } else if(!getBookId().equals(aThat.getBookId())) { return false;}
 
         return true;
     }
@@ -86,10 +96,11 @@ public class BookCopy {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (registrationDate != null ? registrationDate.hashCode() : 0);
-        result = prime * result + price;
-        result = prime * result + pricePerDay;
-        result = prime * result + (int)bookId;
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getRegistrationDate() != null ? getRegistrationDate().hashCode() : 0);
+        result = prime * result + getPrice();
+        result = prime * result + getPricePerDay();
+        result = prime * result + (getBookId() != null ? getBookId().hashCode() : 0);
         return result;
     }
 
@@ -97,11 +108,11 @@ public class BookCopy {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{registrationDate=").append(registrationDate)
-                .append(", price=").append(price)
-                .append(", pricePerDay=").append(pricePerDay)
-                .append(", bookId=").append(bookId)
+                .append("{registrationDate=").append(getRegistrationDate())
+                .append(", price=").append(getPrice())
+                .append(", pricePerDay=").append(getPricePerDay())
+                .append(", bookId=").append(getBookId())
                 .append("}");
-        return  sb.toString();
+        return sb.toString();
     }
 }

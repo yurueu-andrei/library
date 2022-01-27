@@ -1,13 +1,17 @@
 package by.library.yurueu.entity;
 
+import java.time.LocalDate;
+
 public class Author {
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
-    private String birthDate;
+    private LocalDate birthDate;
     private String imagePath;
 
-    public Author(long id, String firstName, String lastName, String birthDate, String imagePath) {
+    public Author() {}
+
+    public Author(Long id, String firstName, String lastName, LocalDate birthDate, String imagePath) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -15,18 +19,18 @@ public class Author {
         this.imagePath = imagePath;
     }
 
-    public Author(String firstName, String lastName, String birthDate, String imagePath) {
+    public Author(String firstName, String lastName, LocalDate birthDate, String imagePath) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.imagePath = imagePath;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,11 +50,11 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -69,6 +73,10 @@ public class Author {
 
         Author aThat = (Author) obj;
 
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
+
         if(getFirstName() == null) {
             if(aThat.getFirstName() != null) {return false;}
         } else if(!getFirstName().equals(aThat.getFirstName())) { return false;}
@@ -82,20 +90,19 @@ public class Author {
         } else if(!getBirthDate().equals(aThat.getBirthDate())) { return false;}
 
         if(getImagePath() == null) {
-            if(aThat.getImagePath() != null) {return false;}
-        } else if(!getImagePath().equals(aThat.getImagePath())) { return false;}
-
-        return true;
+            return aThat.getImagePath() == null;
+        } else return getImagePath().equals(aThat.getImagePath());
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (firstName != null ? firstName.hashCode() : 0);
-        result = prime * result + (lastName != null ? lastName.hashCode() : 0);
-        result = prime * result + (birthDate != null ? birthDate.hashCode() : 0);
-        result = prime * result + (imagePath != null ? imagePath.hashCode() : 0);
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
+        result = prime * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = prime * result + (getBirthDate() != null ? getBirthDate().hashCode() : 0);
+        result = prime * result + (getImagePath() != null ? getImagePath().hashCode() : 0);
         return result;
     }
 
@@ -103,10 +110,11 @@ public class Author {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{firstName=").append(firstName)
-                .append(", lastName=").append(lastName)
-                .append(", birthDate=").append(birthDate)
-                .append(", imagePath=").append(imagePath)
+                .append("{id=").append(getId())
+                .append(", firstName=").append(getFirstName())
+                .append(", lastName=").append(getLastName())
+                .append(", birthDate=").append(getBirthDate())
+                .append(", imagePath=").append(getImagePath())
                 .append("}");
         return  sb.toString();
     }

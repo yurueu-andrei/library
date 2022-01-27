@@ -1,12 +1,14 @@
 package by.library.yurueu.entity;
 
 public class Book {
-    private long id;
+    private Long id;
     private String title;
     private int pagesNumber;
     private String imagePath;
 
-    public Book(long id, String title, int pagesNumber, String imagePath) {
+    public Book() {}
+
+    public Book(Long id, String title, int pagesNumber, String imagePath) {
         this.id = id;
         this.title = title;
         this.pagesNumber = pagesNumber;
@@ -19,11 +21,11 @@ public class Book {
         this.imagePath = imagePath;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,6 +60,10 @@ public class Book {
 
         Book aThat = (Book) obj;
 
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
+
         if(getTitle() == null) {
             if(aThat.getTitle() != null) {return false;}
         } else if(!getTitle().equals(aThat.getTitle())) { return false;}
@@ -75,20 +81,23 @@ public class Book {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (title != null ? title.hashCode() : 0);
-        result = prime * result + (imagePath != null ? imagePath.hashCode() : 0);
-        result = prime * result + pagesNumber;
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getTitle() != null ? getTitle().hashCode() : 0);
+        result = prime * result + (getImagePath() != null ? getImagePath().hashCode() : 0);
+        result = prime * result + getPagesNumber();
         return result;
     }
 
     @Override
+
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{title=").append(title)
-                .append(", pagesNumber=").append(pagesNumber)
-                .append(", imagePath=").append(imagePath)
+                .append("{id=").append(getId())
+                .append(", title=").append(getTitle())
+                .append(", pagesNumber=").append(getPagesNumber())
+                .append(", imagePath=").append(getImagePath())
                 .append("}");
-        return  sb.toString();
+        return sb.toString();
     }
 }

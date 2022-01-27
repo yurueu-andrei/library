@@ -1,15 +1,19 @@
 package by.library.yurueu.entity;
 
+import java.time.LocalDate;
+
 public class User {
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String passportNumber;
     private String email;
     private String address;
-    private String birthDate;
+    private LocalDate birthDate;
 
-    public User(long id, String firstName, String lastName, String passportNumber, String email, String address, String birthDate) {
+    public User() {}
+
+    public User(Long id, String firstName, String lastName, String passportNumber, String email, String address, LocalDate birthDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,7 +23,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public User(String firstName, String lastName, String passportNumber, String email, String address, String birthDate) {
+    public User(String firstName, String lastName, String passportNumber, String email, String address, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.passportNumber = passportNumber;
@@ -28,11 +32,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,11 +80,11 @@ public class User {
         this.address = address;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -90,6 +94,10 @@ public class User {
         if (obj == null || getClass() != obj.getClass()) {return false;}
 
         User aThat = (User) obj;
+
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
 
         if(getFirstName() == null) {
             if(aThat.getFirstName() != null) {return false;}
@@ -122,12 +130,13 @@ public class User {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (firstName != null ? firstName.hashCode() : 0);
-        result = prime * result + (lastName != null ? lastName.hashCode() : 0);
-        result = prime * result + (passportNumber != null ? passportNumber.hashCode() : 0);
-        result = prime * result + (email != null ? email.hashCode() : 0);
-        result = prime * result + (address != null ? address.hashCode() : 0);
-        result = prime * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
+        result = prime * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = prime * result + (getPassportNumber() != null ? getPassportNumber().hashCode() : 0);
+        result = prime * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        result = prime * result + (getAddress() != null ? getAddress().hashCode() : 0);
+        result = prime * result + (getBirthDate() != null ? getBirthDate().hashCode() : 0);
         return result;
     }
 
@@ -135,12 +144,13 @@ public class User {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{firstName=").append(firstName)
-                .append(", lastName=").append(lastName)
-                .append(", birthDate=").append(birthDate)
-                .append(", passport=").append(passportNumber)
-                .append(", email=").append(email)
-                .append(", address=").append(address)
+                .append("{id=").append(getId())
+                .append(", firstName=").append(getFirstName())
+                .append(", lastName=").append(getLastName())
+                .append(", birthDate=").append(getBirthDate())
+                .append(", passport=").append(getPassportNumber())
+                .append(", email=").append(getEmail())
+                .append(", address=").append(getAddress())
                 .append("}");
         return  sb.toString();
     }

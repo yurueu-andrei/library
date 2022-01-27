@@ -3,14 +3,16 @@ package by.library.yurueu.entity;
 import java.time.LocalDate;
 
 public class Order {
-    private long id;
+    private Long id;
     private String orderStatus;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private int price;
-    private long userId;
+    private Long userId;
 
-    public Order(long id, String orderStatus, String startDate, String endDate, int price, long userId) {
+    public Order() {}
+
+    public Order(Long id, String orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.startDate = startDate;
@@ -19,7 +21,7 @@ public class Order {
         this.userId = userId;
     }
 
-    public Order(String orderStatus, String startDate, String endDate, int price, long userId) {
+    public Order(String orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
         this.orderStatus = orderStatus;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -27,11 +29,11 @@ public class Order {
         this.userId = userId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,19 +45,19 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -67,11 +69,11 @@ public class Order {
         this.price = price;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -81,6 +83,10 @@ public class Order {
         if (obj == null || getClass() != obj.getClass()) {return false;}
 
         Order aThat = (Order) obj;
+
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
 
         if(getOrderStatus() == null) {
             if(aThat.getOrderStatus() != null) {return false;}
@@ -96,7 +102,9 @@ public class Order {
 
         if(getPrice() != aThat.getPrice()) {return false;}
 
-        if(getUserId() != aThat.getUserId()) {return false;}
+        if(getUserId() == null) {
+            if(aThat.getUserId() != null) {return false;}
+        } else if(!getUserId().equals(aThat.getUserId())) { return false;}
 
         return true;
     }
@@ -105,10 +113,12 @@ public class Order {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (orderStatus != null ? orderStatus.hashCode() : 0);
-        result = prime * result + (startDate != null ? startDate.hashCode() : 0);
-        result = prime * result + (endDate != null ? endDate.hashCode() : 0);
-        result = prime * result + price;
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getOrderStatus() != null ? getOrderStatus().hashCode() : 0);
+        result = prime * result + (getStartDate() != null ? getStartDate().hashCode() : 0);
+        result = prime * result + (getEndDate() != null ? getEndDate().hashCode() : 0);
+        result = prime * result + (getUserId() != null ? getUserId().hashCode() : 0);
+        result = prime * result + getPrice();
         return result;
     }
 
@@ -116,12 +126,13 @@ public class Order {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{orderStatus=").append(orderStatus)
-                .append(", startDate=").append(startDate)
-                .append(", endDate=").append(endDate)
-                .append(", price=").append(price)
-                .append(", userId=").append(userId)
+                .append("{id=").append(getId())
+                .append(", orderStatus=").append(getOrderStatus())
+                .append(", startDate=").append(getStartDate())
+                .append(", endDate=").append(getEndDate())
+                .append(", price=").append(getPrice())
+                .append(", userId=").append(getUserId())
                 .append("}");
-        return  sb.toString();
+        return sb.toString();
     }
 }

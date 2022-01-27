@@ -1,10 +1,12 @@
 package by.library.yurueu.entity;
 
 public class Role {
-    private long id;
+    private Long id;
     private String roleName;
 
-    public Role(long id, String roleName) {
+    public Role() {}
+
+    public Role(Long id, String roleName) {
         this.id = id;
         this.roleName = roleName;
     }
@@ -13,11 +15,11 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,6 +38,10 @@ public class Role {
 
         Role aThat = (Role) obj;
 
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
+
         if(getRoleName() == null) {
             if(aThat.getRoleName() != null) {return false;}
         } else if(!getRoleName().equals(aThat.getRoleName())) { return false;}
@@ -47,7 +53,8 @@ public class Role {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (roleName != null ? roleName.hashCode() : 0);
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getRoleName() != null ? getRoleName().hashCode() : 0);
         return result;
     }
 
@@ -55,7 +62,8 @@ public class Role {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{roleName=").append(roleName)
+                .append("{id=").append(getId())
+                .append(", roleName=").append(getRoleName())
                 .append("}");
         return sb.toString();
     }

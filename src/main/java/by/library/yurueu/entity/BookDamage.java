@@ -1,13 +1,15 @@
 package by.library.yurueu.entity;
 
 public class BookDamage {
-    private long id;
+    private Long id;
     private String imagePath;
-    private long userId;
-    private long orderId;
-    private long bookCopyId;
+    private Long userId;
+    private Long orderId;
+    private Long bookCopyId;
 
-    public BookDamage(long id, String imagePath, long userId, long orderId, long bookCopyId) {
+    public BookDamage() {}
+
+    public BookDamage(Long id, String imagePath, Long userId, Long orderId, Long bookCopyId) {
         this.id = id;
         this.imagePath = imagePath;
         this.userId = userId;
@@ -15,18 +17,18 @@ public class BookDamage {
         this.bookCopyId = bookCopyId;
     }
 
-    public BookDamage(String imagePath, long userId, long orderId, long bookCopyId) {
+    public BookDamage(String imagePath, Long userId, Long orderId, Long bookCopyId) {
         this.imagePath = imagePath;
         this.userId = userId;
         this.orderId = orderId;
         this.bookCopyId = bookCopyId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,27 +40,27 @@ public class BookDamage {
         this.imagePath = imagePath;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public long getBookCopyId() {
+    public Long getBookCopyId() {
         return bookCopyId;
     }
 
-    public void setBookCopyId(long bookCopyId) {
+    public void setBookCopyId(Long bookCopyId) {
         this.bookCopyId = bookCopyId;
     }
 
@@ -69,11 +71,21 @@ public class BookDamage {
 
         BookDamage aThat = (BookDamage) obj;
 
-        if(getUserId() != aThat.getUserId()) {return false;}
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
 
-        if(getOrderId() != aThat.getOrderId()) {return false;}
+        if(getUserId() == null) {
+            if(aThat.getUserId() != null) {return false;}
+        } else if(!getUserId().equals(aThat.getUserId())) { return false;}
 
-        if(getBookCopyId() != aThat.getBookCopyId()) {return false;}
+        if(getOrderId() == null) {
+            if(aThat.getOrderId() != null) {return false;}
+        } else if(!getOrderId().equals(aThat.getOrderId())) { return false;}
+
+        if(getBookCopyId() == null) {
+            if(aThat.getBookCopyId() != null) {return false;}
+        } else if(!getBookCopyId().equals(aThat.getBookCopyId())) { return false;}
 
         if(getImagePath() == null) {
             if(aThat.getImagePath() != null) {return false;}
@@ -86,10 +98,11 @@ public class BookDamage {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (imagePath != null ? imagePath.hashCode() : 0);
-        result = prime * result + (int)userId;
-        result = prime * result + (int)orderId;
-        result = prime * result + (int)bookCopyId;
+        result = prime * result + (getImagePath() != null ? getImagePath().hashCode() : 0);
+        result = prime * result + (getBookCopyId() != null ? getBookCopyId().hashCode() : 0);
+        result = prime * result + (getOrderId() != null ? getOrderId().hashCode() : 0);
+        result = prime * result + (getUserId() != null ? getUserId().hashCode() : 0);
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
         return result;
     }
 
@@ -97,11 +110,12 @@ public class BookDamage {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{imagePath=").append(imagePath)
-                .append(", userId=").append(userId)
-                .append(", orderId=").append(orderId)
-                .append(", bookCopyId=").append(bookCopyId)
+                .append("{id=").append(getId())
+                .append(", imagePath=").append(getImagePath())
+                .append(", userId=").append(getUserId())
+                .append(", orderId=").append(getOrderId())
+                .append(", bookCopyId=").append(getBookCopyId())
                 .append("}");
-        return  sb.toString();
+        return sb.toString();
     }
 }

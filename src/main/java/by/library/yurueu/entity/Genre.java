@@ -1,10 +1,12 @@
 package by.library.yurueu.entity;
 
 public class Genre {
-    private long id;
+    private Long id;
     private String genreName;
 
-    public Genre(long id, String genreName) {
+    public Genre() {}
+
+    public Genre(Long id, String genreName) {
         this.id = id;
         this.genreName = genreName;
     }
@@ -13,11 +15,11 @@ public class Genre {
         this.genreName = genreName;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,6 +38,10 @@ public class Genre {
 
         Genre aThat = (Genre) obj;
 
+        if(getId() == null) {
+            if(aThat.getId() != null) {return false;}
+        } else if(!getId().equals(aThat.getId())) { return false;}
+
         if(getGenreName() == null) {
             if(aThat.getGenreName() != null) {return false;}
         } else if(!getGenreName().equals(aThat.getGenreName())) { return false;}
@@ -47,7 +53,8 @@ public class Genre {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (genreName != null ? genreName.hashCode() : 0);
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getGenreName() != null ? getGenreName().hashCode() : 0);
         return result;
     }
 
@@ -55,8 +62,9 @@ public class Genre {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{genreName=").append(genreName)
+                .append("{id=").append(getId())
+                .append(", genreName=").append(getGenreName())
                 .append("}");
-        return  sb.toString();
+        return sb.toString();
     }
 }
