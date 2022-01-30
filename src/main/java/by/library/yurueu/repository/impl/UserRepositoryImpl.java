@@ -4,16 +4,15 @@ import by.library.yurueu.entity.User;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.UserRepository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import static by.library.yurueu.repository.Property.*;
 
 public class UserRepositoryImpl implements UserRepository {
     private static final String ID_COLUMN = "id";
@@ -29,68 +28,69 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String INSERT_QUERY =
             "INSERT INTO users (first_name, last_name, passport, email, address, birth_date) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_QUERY =
-                "UPDATE users SET first_name = ?, last_name = ?, passport = ?, email = ?, address = ?, birth_date = ? WHERE (id = ?)";
-    private static final String DELETE_QUERY = "DELETE FROM users WHERE (id = ?)";
+                "UPDATE users SET first_name=?, last_name=?, passport=?, email=?, address=?, birth_date=? WHERE id=?";
+    private static final String DELETE_QUERY = "DELETE FROM users WHERE id=?";
+
+    private static final String SELECT_ORDERS_BY_USER_ID_QUERY = "SELECT id FROM orders WHERE user_id=?";
+    private static final String DELETE_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE user_id=?";
+    private static final String DELETE_ORDER_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE order_id=?";
+    private static final String DELETE_ORDERS_QUERY = "DELETE FROM orders WHERE user_id=?";
+
+    private final DataSource dataSource;
+
+    public UserRepositoryImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public User findById(Long id) throws RepositoryException {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
         ) {
             preparedStatement.setLong(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
-                User user = null;
-                while (resultSet.next()) {
-                    user = new User();
-                    user.setId(resultSet.getLong(ID_COLUMN));
-                    user.setFirstName(resultSet.getString(FIRST_NAME_COLUMN));
-                    user.setLastName(resultSet.getString(LAST_NAME_COLUMN));
-                    user.setPassportNumber(resultSet.getString(PASSPORT_COLUMN));
-                    user.setEmail(resultSet.getString(EMAIL_COLUMN));
-                    user.setAddress(resultSet.getString(ADDRESS_COLUMN));
-                    user.setBirthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate());
-                }
-                return user;
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next() ? construct(resultSet) : null;
             }
         } catch (Exception ex) {
             throw new RepositoryException("User was not found[" + ex.getMessage() + "]");
         }
     }
 
+    private User construct(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getLong(ID_COLUMN));
+        user.setFirstName(resultSet.getString(FIRST_NAME_COLUMN));
+        user.setLastName(resultSet.getString(LAST_NAME_COLUMN));
+        user.setPassportNumber(resultSet.getString(PASSPORT_COLUMN));
+        user.setEmail(resultSet.getString(EMAIL_COLUMN));
+        user.setAddress(resultSet.getString(ADDRESS_COLUMN));
+        user.setBirthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate());
+        return user;
+    }
+
     @Override
     public List<User> findAll() throws RepositoryException {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
         ) {
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
-                User user = null;
-                List<User> allUsers = new ArrayList<>();
+                List<User> users = new ArrayList<>();
                 while (resultSet.next()) {
-                    user = new User();
-                    user.setId(resultSet.getLong(ID_COLUMN));
-                    user.setFirstName(resultSet.getString(FIRST_NAME_COLUMN));
-                    user.setBirthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate());
-                    allUsers.add(user);
+                    users.add(construct(resultSet));
                 }
-                return allUsers;
+                return users;
             }
         } catch (Exception ex) {
-            throw new RepositoryException("Failed to find all users[" + ex.getMessage() + "]");
+            throw new RepositoryException("Users were not found[" + ex.getMessage() + "]");
         }
     }
 
     @Override
     public User add(User user) throws RepositoryException {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
         ) {
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getPassportNumber());
-            preparedStatement.setString(4, user.getEmail());
-            preparedStatement.setString(5, user.getAddress());
-            preparedStatement.setDate(6, Date.valueOf(user.getBirthDate()));
-
+            settingPreparedStatement(preparedStatement, user);
             int value = preparedStatement.executeUpdate();
 
             if (value == 1) {
@@ -106,37 +106,82 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    private void settingPreparedStatement(PreparedStatement preparedStatement, User user) throws SQLException {
+        preparedStatement.setString(1, user.getFirstName());
+        preparedStatement.setString(2, user.getLastName());
+        preparedStatement.setString(3, user.getPassportNumber());
+        preparedStatement.setString(4, user.getEmail());
+        preparedStatement.setString(5, user.getAddress());
+        preparedStatement.setDate(6, Date.valueOf(user.getBirthDate()));
+    }
+
     @Override
     public boolean update(User user) throws RepositoryException {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
         ) {
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getPassportNumber());
-            preparedStatement.setString(4, user.getEmail());
-            preparedStatement.setString(5, user.getAddress());
-            preparedStatement.setDate(6, Date.valueOf(user.getBirthDate()));
+            settingPreparedStatement(preparedStatement, user);
             preparedStatement.setLong(7, user.getId());
 
-            preparedStatement.executeUpdate();
-
+            return preparedStatement.executeUpdate() == 1;
         } catch (Exception ex) {
             throw new RepositoryException("User was not updated [" + ex.getMessage() + "]");
         }
-        return true;
     }
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        try(Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
         ) {
             preparedStatement.setLong(1,id);
-            preparedStatement.executeUpdate();
+            try{
+                connection.setAutoCommit(false);
+                deleteUserRoleLinks(connection, id);
+                deleteUserOrders(connection, id);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            } finally {
+                connection.setAutoCommit(true);
+            }
         } catch (Exception ex) {
             throw new RepositoryException("User was not deleted [" + ex.getMessage() + "]");
         }
         return true;
+    }
+
+    private void deleteUserRoleLinks(Connection connection, Long userId) throws SQLException {
+        deleteLinks(connection, userId, DELETE_ROLE_LINKS_QUERY);
+    }
+
+    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    private void deleteUserOrders(Connection connection, Long userId) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDERS_BY_USER_ID_QUERY)) {
+            preparedStatement.setLong(1, userId);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                List<Long> ordersId = new ArrayList<>();
+                while(resultSet.next()){
+                    ordersId.add(resultSet.getLong(1));
+                }
+                deleteOrderLinks(connection, ordersId);
+                deleteOrders(connection, userId);
+            }
+        }
+    }
+
+    private void deleteOrderLinks(Connection connection, List<Long> ordersId) throws SQLException {
+        for (Long orderId : ordersId) {
+            deleteLinks(connection, orderId, DELETE_ORDER_LINKS_QUERY);
+        }
+    }
+
+    private void deleteOrders(Connection connection, Long userId) throws SQLException {
+        deleteLinks(connection, userId, DELETE_ORDERS_QUERY);
     }
 }
