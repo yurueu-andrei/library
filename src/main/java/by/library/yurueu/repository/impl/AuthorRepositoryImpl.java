@@ -132,7 +132,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             preparedStatement.setLong(1, id);
             try {
                 connection.setAutoCommit(false);
-                deleteBookGenreLinks(connection, id);
+                deleteBookAuthorLinks(connection, id);
                 preparedStatement.executeUpdate();
                 connection.commit();
             } finally {
@@ -151,7 +151,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         }
     }
 
-    private void deleteBookGenreLinks(Connection connection, Long authorId) throws SQLException {
+    private void deleteBookAuthorLinks(Connection connection, Long authorId) throws SQLException {
         deleteLinks(connection, authorId, DELETE_BOOK_AUTHOR_LINKS_QUERY);
     }
 

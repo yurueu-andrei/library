@@ -141,7 +141,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 connection.setAutoCommit(true);
             }
         } catch (Exception ex) {
-            throw new RepositoryException("User was not deleted [" + ex.getMessage() + "]");
+            throw new RepositoryException("Order was not deleted [" + ex.getMessage() + "]");
         }
         return true;
     }
