@@ -1,8 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Author;
-import by.library.yurueu.entity.Book;
-import by.library.yurueu.entity.Order;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.AuthorRepository;
 
@@ -15,10 +13,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.Date;
-import java.sql.DriverManager;
-
-import static java.lang.String.valueOf;
-
 
 public class AuthorRepositoryImpl implements AuthorRepository {
     private static final String ID_COLUMN = "id";

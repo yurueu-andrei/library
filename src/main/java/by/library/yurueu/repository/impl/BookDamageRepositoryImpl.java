@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.BookDamage;
-import by.library.yurueu.entity.User;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BookDamageRepository;
 
@@ -11,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 

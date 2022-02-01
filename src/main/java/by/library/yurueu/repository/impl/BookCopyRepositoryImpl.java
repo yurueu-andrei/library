@@ -1,14 +1,17 @@
 package by.library.yurueu.repository.impl;
 
-import by.library.yurueu.entity.Book;
 import by.library.yurueu.entity.BookCopy;
 import by.library.yurueu.entity.BookCopyStatus;
-import by.library.yurueu.entity.OrderStatus;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BookCopyRepository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,7 +141,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
                 connection.setAutoCommit(true);
             }
         } catch (Exception ex) {
-            throw new RepositoryException("Order was not deleted [" + ex.getMessage() + "]");
+            throw new RepositoryException("Book copy was not deleted [" + ex.getMessage() + "]");
         }
         return true;
     }
