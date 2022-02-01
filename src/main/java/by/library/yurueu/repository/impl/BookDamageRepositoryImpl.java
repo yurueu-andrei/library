@@ -1,6 +1,7 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.BookDamage;
+import by.library.yurueu.entity.User;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BookDamageRepository;
 
@@ -17,16 +18,16 @@ import java.util.List;
 public class BookDamageRepositoryImpl implements BookDamageRepository {
     private static final String ID_COLUMN = "id";
     private static final String IMAGE_PATH_COLUMN = "image_path";
-    private static final String USER_ID_COLUMN = "users_id";
-    private static final String ORDER_ID_COLUMN = "orders_id";
-    private static final String BOOK_COPY_ID_DATE_COLUMN = "book_copies_id";
+    private static final String USER_ID_COLUMN = "user_id";
+    private static final String ORDER_ID_COLUMN = "order_id";
+    private static final String BOOK_COPY_ID_COLUMN = "book_copy_id";
 
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM book_damage WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM book_damage";
     private static final String INSERT_QUERY =
-            "INSERT INTO book_damage (image_path, users_id, orders_id, book_copies_id) VALUES (?,?,?,?,?,?)";
+            "INSERT INTO book_damage (image_path, user_id, order_id, book_copy_id) VALUES (?,?,?,?)";
     private static final String UPDATE_QUERY =
-            "UPDATE book_damage SET image_path=?, users_id=?, orders_id=?, book_copies_id=? WHERE id=?";
+            "UPDATE book_damage SET image_path=?, user_id=?, order_id=?, book_copy_id=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM book_damage WHERE id=?";
 
     private final DataSource dataSource;
@@ -51,10 +52,11 @@ public class BookDamageRepositoryImpl implements BookDamageRepository {
 
     private BookDamage construct(ResultSet resultSet) throws SQLException {
         BookDamage bookDamage = new BookDamage();
-        resultSet.getString(IMAGE_PATH_COLUMN);
-        resultSet.getLong(USER_ID_COLUMN);
-        resultSet.getLong(ORDER_ID_COLUMN);
-        resultSet.getLong(BOOK_COPY_ID_DATE_COLUMN);
+        bookDamage.setId(resultSet.getLong(ID_COLUMN));
+        bookDamage.setImagePath(resultSet.getString(IMAGE_PATH_COLUMN));
+        bookDamage.setUserId(resultSet.getLong(USER_ID_COLUMN));
+        bookDamage.setOrderId(resultSet.getLong(ORDER_ID_COLUMN));
+        bookDamage.setBookCopyId(resultSet.getLong(BOOK_COPY_ID_COLUMN));
         return bookDamage;
     }
 
@@ -119,6 +121,14 @@ public class BookDamageRepositoryImpl implements BookDamageRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        return false;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        ) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (Exception ex) {
+            throw new RepositoryException("Book damage was not deleted [" + ex.getMessage() + "]");
+        }
+        return true;
     }
 }
