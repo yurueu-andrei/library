@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS user_role_links (
 
 CREATE TABLE IF NOT EXISTS orders (
   id BIGINT NOT NULL AUTO_INCREMENT,
-  order_status VARCHAR(64) NOT NULL,
+  order_status ENUM ('NEW', 'ACCEPTED', 'COMPLETED') NOT NULL,
   start_date DATETIME NOT NULL,
   price INT NOT NULL,
   user_id BIGINT NOT NULL,
@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS books (
 
 CREATE TABLE IF NOT EXISTS book_copies (
   id BIGINT NOT NULL AUTO_INCREMENT,
+  book_copy_status ENUM ('ORDERED', 'AVAILABLE') NOT NULL,
   registration_date DATE NOT NULL,
   price INT NOT NULL,
   price_per_day INT NOT NULL,
@@ -114,18 +115,18 @@ CREATE TABLE IF NOT EXISTS book_genre_links (
 CREATE TABLE IF NOT EXISTS book_damage (
   id BIGINT NOT NULL AUTO_INCREMENT,
   image_path VARCHAR(512) NOT NULL,
-  users_id BIGINT NOT NULL,
-  orders_id BIGINT NOT NULL,
-  book_copies_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  order_id BIGINT NOT NULL,
+  book_copy_id BIGINT NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT fk_table1_users1
-    FOREIGN KEY (users_id)
+    FOREIGN KEY (user_id)
     REFERENCES users (id),
   CONSTRAINT fk_table1_orders1
-    FOREIGN KEY (orders_id)
+    FOREIGN KEY (order_id)
     REFERENCES orders (id),
   CONSTRAINT fk_table1_book_copies1
-    FOREIGN KEY (book_copies_id)
+    FOREIGN KEY (book_copy_id)
     REFERENCES book_copies (id)
 );
 COMMIT;
