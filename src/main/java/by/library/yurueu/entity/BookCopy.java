@@ -4,26 +4,32 @@ import java.time.LocalDate;
 
 public class BookCopy {
     private Long id;
+    private BookCopyStatus status;
     private LocalDate registrationDate;
     private int price;
     private int pricePerDay;
     private Long bookId;
+    private Long orderId;
 
     public BookCopy() {}
 
-    public BookCopy(Long id, LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
+    public BookCopy(Long id, BookCopyStatus status, LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
         this.id = id;
+        this.status = status;
         this.registrationDate = registrationDate;
         this.price = price;
         this.pricePerDay = pricePerDay;
         this.bookId = bookId;
+        this.orderId = orderId;
     }
 
-    public BookCopy(LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
+    public BookCopy(BookCopyStatus status, LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
+        this.status = status;
         this.registrationDate = registrationDate;
         this.price = price;
         this.pricePerDay = pricePerDay;
         this.bookId = bookId;
+        this.orderId = orderId;
     }
 
     public Long getId() {
@@ -66,6 +72,22 @@ public class BookCopy {
         this.bookId = bookId;
     }
 
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public BookCopyStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookCopyStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {return true;}
@@ -74,8 +96,12 @@ public class BookCopy {
         BookCopy aThat = (BookCopy) obj;
 
         if(getId() == null) {
-            if(aThat.getRegistrationDate() != null) {return false;}
+            if(aThat.getId() != null) {return false;}
         } else if(!getId().equals(aThat.getId())) { return false;}
+
+        if(getStatus() == null) {
+            if(aThat.getStatus() != null) {return false;}
+        } else if(!getStatus().equals(aThat.getStatus())) { return false;}
 
         if(getRegistrationDate() == null) {
             if(aThat.getRegistrationDate() != null) {return false;}
@@ -84,6 +110,10 @@ public class BookCopy {
         if(getPricePerDay() != aThat.getPricePerDay()) {return false;}
 
         if(getPrice() != aThat.getPrice()) {return false;}
+
+        if(getOrderId() == null) {
+            if(aThat.getOrderId() != null) {return false;}
+        } else if(!getOrderId().equals(aThat.getOrderId())) { return false;}
 
         if(getBookId() == null) {
             return aThat.getBookId() == null;
@@ -95,10 +125,12 @@ public class BookCopy {
         final int prime = 31;
         int result = 1;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getStatus() != null ? getStatus().hashCode() : 0);
         result = prime * result + (getRegistrationDate() != null ? getRegistrationDate().hashCode() : 0);
         result = prime * result + getPrice();
         result = prime * result + getPricePerDay();
         result = prime * result + (getBookId() != null ? getBookId().hashCode() : 0);
+        result = prime * result + (getOrderId() != null ? getOrderId().hashCode() : 0);
         return result;
     }
 
@@ -106,10 +138,12 @@ public class BookCopy {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{registrationDate=").append(getRegistrationDate())
+                .append("{status=").append(getStatus())
+                .append(", registrationDate=").append(getRegistrationDate())
                 .append(", price=").append(getPrice())
                 .append(", pricePerDay=").append(getPricePerDay())
                 .append(", bookId=").append(getBookId())
+                .append(", orderId=").append(getBookId())
                 .append("}");
         return sb.toString();
     }

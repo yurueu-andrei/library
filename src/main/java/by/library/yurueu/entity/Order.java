@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Order {
     private Long id;
-    private String orderStatus;
+    private OrderStatus orderStatus;
     private LocalDate startDate;
     private LocalDate endDate;
     private int price;
@@ -12,7 +12,7 @@ public class Order {
 
     public Order() {}
 
-    public Order(Long id, String orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
+    public Order(Long id, OrderStatus orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.startDate = startDate;
@@ -21,7 +21,7 @@ public class Order {
         this.userId = userId;
     }
 
-    public Order(String orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
+    public Order(OrderStatus orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
         this.orderStatus = orderStatus;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -37,11 +37,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
