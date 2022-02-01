@@ -102,8 +102,8 @@ CREATE TABLE IF NOT EXISTS genres (
   UNIQUE INDEX genre_name_UNIQUE (genre_name));
 
 CREATE TABLE IF NOT EXISTS book_genre_links (
-  genre_id BIGINT NOT NULL,
   book_id BIGINT NOT NULL,
+  genre_id BIGINT NOT NULL,
   CONSTRAINT book_link_genre
     FOREIGN KEY (book_id)
     REFERENCES books (id),
