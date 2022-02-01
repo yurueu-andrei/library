@@ -9,7 +9,6 @@ public class BookCopy {
     private int price;
     private int pricePerDay;
     private Long bookId;
-    private Long orderId;
 
     public BookCopy() {}
 
@@ -20,7 +19,6 @@ public class BookCopy {
         this.price = price;
         this.pricePerDay = pricePerDay;
         this.bookId = bookId;
-        this.orderId = orderId;
     }
 
     public BookCopy(BookCopyStatus status, LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
@@ -29,7 +27,6 @@ public class BookCopy {
         this.price = price;
         this.pricePerDay = pricePerDay;
         this.bookId = bookId;
-        this.orderId = orderId;
     }
 
     public Long getId() {
@@ -72,14 +69,6 @@ public class BookCopy {
         this.bookId = bookId;
     }
 
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
     public BookCopyStatus getStatus() {
         return status;
     }
@@ -111,10 +100,6 @@ public class BookCopy {
 
         if(getPrice() != aThat.getPrice()) {return false;}
 
-        if(getOrderId() == null) {
-            if(aThat.getOrderId() != null) {return false;}
-        } else if(!getOrderId().equals(aThat.getOrderId())) { return false;}
-
         if(getBookId() == null) {
             return aThat.getBookId() == null;
         } else return getBookId().equals(aThat.getBookId());
@@ -130,7 +115,6 @@ public class BookCopy {
         result = prime * result + getPrice();
         result = prime * result + getPricePerDay();
         result = prime * result + (getBookId() != null ? getBookId().hashCode() : 0);
-        result = prime * result + (getOrderId() != null ? getOrderId().hashCode() : 0);
         return result;
     }
 
@@ -144,7 +128,6 @@ public class BookCopy {
                 .append(", price=").append(getPrice())
                 .append(", pricePerDay=").append(getPricePerDay())
                 .append(", bookId=").append(getBookId())
-                .append(", orderId=").append(getBookId())
                 .append("}");
         return sb.toString();
     }

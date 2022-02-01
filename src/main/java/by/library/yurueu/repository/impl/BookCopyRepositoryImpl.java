@@ -19,6 +19,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
     private static final String PRICE_COLUMN = "price";
     private static final String PRICE_PER_DAY_COLUMN = "price_per_day";
     private static final String BOOK_ID_COLUMN = "book_id";
+
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM book_copies WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM book_copies";
     private static final String INSERT_QUERY =
