@@ -138,7 +138,8 @@ public class BookCopy {
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(getClass().getSimpleName())
-                .append("{status=").append(getStatus())
+                .append("{id=").append(getId())
+                .append(", status=").append(getStatus())
                 .append(", registrationDate=").append(getRegistrationDate())
                 .append(", price=").append(getPrice())
                 .append(", pricePerDay=").append(getPricePerDay())
