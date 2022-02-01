@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RoleRepositoryImpl implements RoleRepository {
     private static final String ID_COLUMN = "id";
-    private static final String ROLE_NAME_COLUMN = "first_name";
+    private static final String ROLE_NAME_COLUMN = "role_name";
 
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM roles WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM roles";
@@ -21,6 +21,8 @@ public class RoleRepositoryImpl implements RoleRepository {
     private static final String UPDATE_QUERY =
             "UPDATE roles SET role_name=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM roles WHERE id=?";
+
+    private static final String DELETE_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE role_id=?";
 
     private final DataSource dataSource;
 
@@ -107,6 +109,27 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        return false;
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        ) {
+            preparedStatement.setLong(1,id);
+            try{
+                connection.setAutoCommit(false);
+                deleteUserRoleLinks(connection, id);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (Exception ex) {
+            throw new RepositoryException("Role was not deleted [" + ex.getMessage() + "]");
+        }
+        return true;
+    }
+    private void deleteUserRoleLinks(Connection connection, Long id) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ROLE_LINKS_QUERY)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        }
     }
 }

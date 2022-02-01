@@ -28,13 +28,14 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String INSERT_QUERY =
             "INSERT INTO users (first_name, last_name, passport, email, address, birth_date) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_QUERY =
-                "UPDATE users SET first_name=?, last_name=?, passport=?, email=?, address=?, birth_date=? WHERE id=?";
+            "UPDATE users SET first_name=?, last_name=?, passport=?, email=?, address=?, birth_date=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM users WHERE id=?";
 
     private static final String SELECT_ORDERS_BY_USER_ID_QUERY = "SELECT id FROM orders WHERE user_id=?";
     private static final String DELETE_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE user_id=?";
-    private static final String DELETE_ORDER_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE order_id=?";
     private static final String DELETE_ORDERS_QUERY = "DELETE FROM orders WHERE user_id=?";
+    private static final String DELETE_ORDER_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE order_id=?";
+    private static final String DELETE_BOOK_DAMAGE_QUERY = "DELETE FROM book_damage WHERE order_id=?";
 
     private final DataSource dataSource;
 
@@ -131,13 +132,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
         ) {
-            preparedStatement.setLong(1,id);
-            try{
+            preparedStatement.setLong(1, id);
+            try {
                 connection.setAutoCommit(false);
                 deleteUserRoleLinks(connection, id);
+                deleteBookDamage(connection, id);
                 deleteUserOrders(connection, id);
                 preparedStatement.executeUpdate();
                 connection.commit();
@@ -155,33 +157,37 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
     }
 
     private void deleteUserOrders(Connection connection, Long userId) throws SQLException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDERS_BY_USER_ID_QUERY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDERS_BY_USER_ID_QUERY)) {
             preparedStatement.setLong(1, userId);
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Long> ordersId = new ArrayList<>();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     ordersId.add(resultSet.getLong(1));
                 }
-                deleteOrderLinks(connection, ordersId);
+                deleteOrdersLinks(connection, ordersId);
                 deleteOrders(connection, userId);
             }
         }
     }
 
-    private void deleteOrderLinks(Connection connection, List<Long> ordersId) throws SQLException {
-        for (Long orderId : ordersId) {
+    private void deleteOrders(Connection connection, Long userId) throws SQLException {
+        deleteLinks(connection, userId, DELETE_ORDERS_QUERY);
+    }
+
+    private void deleteOrdersLinks(Connection connection, List<Long> orders) throws SQLException {
+        for (Long orderId : orders) {
             deleteLinks(connection, orderId, DELETE_ORDER_LINKS_QUERY);
         }
     }
 
-    private void deleteOrders(Connection connection, Long userId) throws SQLException {
-        deleteLinks(connection, userId, DELETE_ORDERS_QUERY);
+    private void deleteBookDamage(Connection connection, Long orderId) throws SQLException {
+        deleteLinks(connection, orderId, DELETE_BOOK_DAMAGE_QUERY);
     }
 }

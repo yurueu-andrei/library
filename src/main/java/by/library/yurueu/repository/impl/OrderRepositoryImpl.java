@@ -1,6 +1,7 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Order;
+import by.library.yurueu.entity.OrderStatus;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.OrderRepository;
 
@@ -30,7 +31,8 @@ public class OrderRepositoryImpl implements OrderRepository {
             "UPDATE orders SET order_status=?, start_date=?, end_date=?, price=?, user_id=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM orders WHERE id=?";
 
-
+    private static final String DELETE_ORDER_BOOK_COPY_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE order_id=?";
+    private static final String DELETE_BOOK_DAMAGE_QUERY = "DELETE FROM book_damage WHERE order_id=?";
 
     private final DataSource dataSource;
 
@@ -40,11 +42,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order findById(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
-            preparedStatement.setLong(1,id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()){
+            preparedStatement.setLong(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? construct(resultSet) : null;
             }
         } catch (Exception ex) {
@@ -55,7 +57,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     private Order construct(ResultSet resultSet) throws SQLException {
         Order order = new Order();
         order.setId(resultSet.getLong(ID_COLUMN));
-        order.setOrderStatus(resultSet.getString(ORDER_STATUS_COLUMN));
+        order.setOrderStatus(OrderStatus.valueOf(resultSet.getString(ORDER_STATUS_COLUMN)));
         order.setStartDate(resultSet.getDate(START_DATE_COLUMN).toLocalDate());
         order.setEndDate(resultSet.getDate(END_DATE_COLUMN).toLocalDate());
         order.setPrice(resultSet.getInt(PRICE_COLUMN));
@@ -65,12 +67,12 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findAll() throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
             List<Order> orders = new ArrayList<>();
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                while(resultSet.next()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
                     orders.add(construct(resultSet));
                 }
             }
@@ -82,14 +84,14 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order add(Order order) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             settingPreparedStatement(preparedStatement, order);
             int value = preparedStatement.executeUpdate();
 
             if (value == 1) {
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                     if (resultSet.next()) {
                         order.setId(resultSet.getLong(1));
                     }
@@ -102,7 +104,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     private void settingPreparedStatement(PreparedStatement preparedStatement, Order order) throws SQLException {
-        preparedStatement.setString(1, order.getOrderStatus());
+        preparedStatement.setString(1, order.getOrderStatus().toString());
         preparedStatement.setDate(2, Date.valueOf(order.getStartDate()));
         preparedStatement.setDate(3, Date.valueOf(order.getEndDate()));
         preparedStatement.setInt(4, order.getPrice());
@@ -111,8 +113,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public boolean update(Order order) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, order);
             preparedStatement.setLong(6, order.getId());
@@ -125,6 +127,37 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        return false;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        ) {
+            preparedStatement.setLong(1, id);
+            try {
+                connection.setAutoCommit(false);
+                deleteOrderBookCopyLinks(connection, id);
+                deleteBookDamage(connection, id);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (Exception ex) {
+            throw new RepositoryException("User was not deleted [" + ex.getMessage() + "]");
+        }
+        return true;
+    }
+
+    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    private void deleteOrderBookCopyLinks(Connection connection, Long orderId) throws SQLException {
+        deleteLinks(connection, orderId, DELETE_ORDER_BOOK_COPY_LINKS_QUERY);
+    }
+
+    private void deleteBookDamage(Connection connection, Long orderId) throws SQLException {
+        deleteLinks(connection, orderId, DELETE_BOOK_DAMAGE_QUERY);
     }
 }
