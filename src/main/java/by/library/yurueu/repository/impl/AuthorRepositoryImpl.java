@@ -2,6 +2,7 @@ package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Author;
 import by.library.yurueu.entity.Book;
+import by.library.yurueu.entity.Order;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.AuthorRepository;
 
@@ -34,7 +35,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             "UPDATE authors SET first_name = ?, last_name = ?, birth_date = ?, image_path = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM authors WHERE id = ?";
 
-
+    private static final String DELETE_BOOK_AUTHOR_LINKS_QUERY = "DELETE FROM book_author_links WHERE author_id=?";
 
     private final DataSource dataSource;
 
@@ -71,8 +72,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
             List<Author> authors = new ArrayList<>();
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
-                authors.add(construct(resultSet));
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()){
+                    authors.add(construct(resultSet));
+                }
             }
             return authors;
         } catch (Exception ex) {
@@ -110,7 +113,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     @Override
     public boolean update(Author author) throws RepositoryException {
         try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, author);
             preparedStatement.setLong(5, author.getId());
@@ -123,6 +126,33 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        return false;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        ) {
+            preparedStatement.setLong(1, id);
+            try {
+                connection.setAutoCommit(false);
+                deleteBookGenreLinks(connection, id);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (Exception ex) {
+            throw new RepositoryException("Genre was not deleted [" + ex.getMessage() + "]");
+        }
+        return true;
     }
+
+    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    private void deleteBookGenreLinks(Connection connection, Long authorId) throws SQLException {
+        deleteLinks(connection, authorId, DELETE_BOOK_AUTHOR_LINKS_QUERY);
+    }
+
 }

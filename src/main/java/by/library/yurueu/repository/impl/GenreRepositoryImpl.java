@@ -18,10 +18,10 @@ public class GenreRepositoryImpl implements GenreRepository {
     private static final String INSERT_QUERY =
             "INSERT INTO genres (genre_name) VALUES (?)";
     private static final String UPDATE_QUERY =
-            "UPDATE genres SET genre_name = ? WHERE id = ?";
-    private static final String DELETE_QUERY = "DELETE FROM genres WHERE id = ?";
+            "UPDATE genres SET genre_name = ? WHERE id=?";
+    private static final String DELETE_QUERY = "DELETE FROM genres WHERE id=?";
 
-
+    private static final String DELETE_BOOK_GENRE_LINKS_QUERY = "DELETE FROM book_genre_links WHERE genre_id=?";
 
     private final DataSource dataSource;
 
@@ -102,6 +102,32 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        return false;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        ) {
+            preparedStatement.setLong(1, id);
+            try {
+                connection.setAutoCommit(false);
+                deleteBookGenreLinks(connection, id);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (Exception ex) {
+            throw new RepositoryException("Genre was not deleted [" + ex.getMessage() + "]");
+        }
+        return true;
+    }
+
+    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    private void deleteBookGenreLinks(Connection connection, Long genreId) throws SQLException {
+        deleteLinks(connection, genreId, DELETE_BOOK_GENRE_LINKS_QUERY);
     }
 }
