@@ -2,13 +2,11 @@ package by.library.yurueu.service;
 
 import org.flywaydb.core.Flyway;
 
-import static by.library.yurueu.service.Property.*;
-
 public class FlywayService {
     private Flyway flyway;
 
-    public FlywayService() {
-        init();
+    public FlywayService(String url, String user, String password, String migrationLocation) {
+        init(url, user, password, migrationLocation);
     }
 
     public void migrate() {
@@ -19,7 +17,7 @@ public class FlywayService {
         flyway.clean();
     }
 
-    public void init() {
-        flyway = Flyway.configure().dataSource(H2_URL, H2_USER, H2_PASSWORD).locations(MIGRATION_LOCATION).load();
+    public void init(String url, String user, String password, String migrationLocation) {
+        flyway = Flyway.configure().dataSource(url, user, password).locations(migrationLocation).load();
     }
 }

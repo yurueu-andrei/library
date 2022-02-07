@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class BookRepositoryImpl implements BookRepository {
     private static final String ID_COLUMN = "id";
     private static final String TITLE_COLUMN = "title";
@@ -189,5 +188,4 @@ public class BookRepositoryImpl implements BookRepository {
     private void deleteBookCopies(Connection connection, Long bookId) throws SQLException {
         deleteLinks(connection, bookId, DELETE_BOOK_COPIES_QUERY);
     }
-
 }

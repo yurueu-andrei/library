@@ -7,15 +7,15 @@ CREATE TABLE IF NOT EXISTS users (
   address VARCHAR(128) NOT NULL,
   birth_date DATETIME NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT login_UNIQUE UNIQUE (passport),
-  CONSTRAINT email_UNIQUE UNIQUE (email)
+  CONSTRAINT login_unique UNIQUE (passport),
+  CONSTRAINT email_unique UNIQUE (email)
  );
 
 CREATE TABLE IF NOT EXISTS roles (
   id BIGINT NOT NULL AUTO_INCREMENT,
   role_name VARCHAR(64) NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT role_name_UNIQUE UNIQUE (role_name)
+  CONSTRAINT role_name_unique UNIQUE (role_name)
 );
 
 CREATE TABLE IF NOT EXISTS user_role_links (
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS authors (
   birth_date DATETIME NOT NULL,
   image_path VARCHAR(512) NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE INDEX id_UNIQUE (id)
+  UNIQUE INDEX id_unique (id)
 );
 
 CREATE TABLE IF NOT EXISTS book_author_links (
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS genres (
   id BIGINT NOT NULL AUTO_INCREMENT,
   genre_name VARCHAR(64) NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE INDEX genre_name_UNIQUE (genre_name));
+  UNIQUE INDEX genre_name_unique (genre_name));
 
 CREATE TABLE IF NOT EXISTS book_genre_links (
   book_id BIGINT NOT NULL,
