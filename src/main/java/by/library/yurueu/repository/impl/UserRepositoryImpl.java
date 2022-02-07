@@ -46,7 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findById(Long id) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -72,9 +72,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> findAll() throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<User> users = new ArrayList<>();
                 while (resultSet.next()) {
                     users.add(construct(resultSet));
@@ -89,7 +89,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User add(User user) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             settingPreparedStatement(preparedStatement, user);
             int value = preparedStatement.executeUpdate();
@@ -119,7 +119,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean update(User user) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, user);
             preparedStatement.setLong(7, user.getId());

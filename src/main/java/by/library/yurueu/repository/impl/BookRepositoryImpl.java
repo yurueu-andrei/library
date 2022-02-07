@@ -43,7 +43,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book findById(Long id) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -66,7 +66,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> findAll() throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Book> books = new ArrayList<>();
@@ -83,13 +83,13 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book add(Book book) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             settingPreparedStatement(preparedStatement, book);
             int value = preparedStatement.executeUpdate();
 
             if (value == 1) {
-                try (ResultSet resultSet = preparedStatement.getGeneratedKeys();) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                     if (resultSet.next()) {
                         book.setId(resultSet.getLong(ID_COLUMN));
                     }
@@ -110,7 +110,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public boolean update(Book book) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, book);
             preparedStatement.setLong(4, book.getId());

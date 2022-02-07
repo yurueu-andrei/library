@@ -37,7 +37,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public Genre findById(Long id) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -58,7 +58,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public List<Genre> findAll() throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
             List<Genre> genres = new ArrayList<>();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -75,7 +75,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public Genre add(Genre genre) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, genre.getGenreName());
             int value = preparedStatement.executeUpdate();
@@ -95,7 +95,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public boolean update(Genre genre) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             preparedStatement.setString(1, genre.getGenreName());
             preparedStatement.setLong(2, genre.getId());
@@ -126,14 +126,14 @@ public class GenreRepositoryImpl implements GenreRepository {
         return true;
     }
 
-    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    private void deleteLinks(Connection connection, Long id) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GenreRepositoryImpl.DELETE_BOOK_GENRE_LINKS_QUERY)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
     }
 
     private void deleteBookGenreLinks(Connection connection, Long genreId) throws SQLException {
-        deleteLinks(connection, genreId, DELETE_BOOK_GENRE_LINKS_QUERY);
+        deleteLinks(connection, genreId);
     }
 }

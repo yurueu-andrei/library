@@ -36,7 +36,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public Role findById(Long id) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -57,9 +57,9 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public List<Role> findAll() throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Role> roles = new ArrayList<>();
                 while (resultSet.next()) {
                     roles.add(construct(resultSet));
@@ -74,7 +74,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public Role add(Role role) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             settingPreparedStatement(preparedStatement, role);
             int value = preparedStatement.executeUpdate();
@@ -99,7 +99,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public boolean update(Role role) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, role);
             preparedStatement.setLong(2, role.getId());

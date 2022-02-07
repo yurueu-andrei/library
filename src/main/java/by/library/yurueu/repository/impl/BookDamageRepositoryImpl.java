@@ -37,7 +37,7 @@ public class BookDamageRepositoryImpl implements BookDamageRepository {
     @Override
     public BookDamage findById(Long id) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -61,9 +61,9 @@ public class BookDamageRepositoryImpl implements BookDamageRepository {
     @Override
     public List<BookDamage> findAll() throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<BookDamage> bookDamages = new ArrayList<>();
                 while (resultSet.next()) {
                     bookDamages.add(construct(resultSet));
@@ -78,7 +78,7 @@ public class BookDamageRepositoryImpl implements BookDamageRepository {
     @Override
     public BookDamage add(BookDamage bookDamage) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             settingPreparedStatement(preparedStatement, bookDamage);
             int value = preparedStatement.executeUpdate();
@@ -106,7 +106,7 @@ public class BookDamageRepositoryImpl implements BookDamageRepository {
     @Override
     public boolean update(BookDamage bookDamage) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, bookDamage);
             preparedStatement.setLong(5, bookDamage.getId());

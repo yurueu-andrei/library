@@ -1,7 +1,6 @@
 package by.library.yurueu.repository;
 
 import by.library.yurueu.entity.Author;
-import by.library.yurueu.entity.Book;
 import by.library.yurueu.exception.RepositoryException;
 
 import java.util.List;

@@ -139,15 +139,15 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         return true;
     }
 
-    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    private void deleteLinks(Connection connection, Long id) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(AuthorRepositoryImpl.DELETE_BOOK_AUTHOR_LINKS_QUERY)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
     }
 
     private void deleteBookAuthorLinks(Connection connection, Long authorId) throws SQLException {
-        deleteLinks(connection, authorId, DELETE_BOOK_AUTHOR_LINKS_QUERY);
+        deleteLinks(connection, authorId);
     }
 
 }
