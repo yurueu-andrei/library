@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface BookDamageRepository {
     BookDamage findById(Long id) throws RepositoryException;
+
     List<BookDamage> findAll() throws RepositoryException;
+
     BookDamage add(BookDamage bookDamage) throws RepositoryException;
+
     boolean update(BookDamage bookDamage) throws RepositoryException;
+
     boolean delete(Long id) throws RepositoryException;
 }

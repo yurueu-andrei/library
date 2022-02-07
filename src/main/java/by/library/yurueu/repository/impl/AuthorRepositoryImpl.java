@@ -39,11 +39,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Author findById(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? construct(resultSet) : null;
             }
         } catch (Exception ex) {
@@ -63,12 +63,12 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> findAll() throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
         ) {
             List<Author> authors = new ArrayList<>();
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                while(resultSet.next()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
                     authors.add(construct(resultSet));
                 }
             }
@@ -80,14 +80,14 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Author add(Author author) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             settingPreparedStatement(preparedStatement, author);
 
             int value = preparedStatement.executeUpdate();
-            if (value == 1){
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
-                    if (resultSet.next()){
+            if (value == 1) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
                         author.setId(resultSet.getLong(1));
                     }
                 }
@@ -100,15 +100,15 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     private void settingPreparedStatement(PreparedStatement preparedStatement, Author author) throws SQLException {
         preparedStatement.setString(1, author.getFirstName());
-        preparedStatement.setString(2,author.getLastName());
+        preparedStatement.setString(2, author.getLastName());
         preparedStatement.setDate(3, Date.valueOf(author.getBirthDate()));
         preparedStatement.setString(4, author.getImagePath());
     }
 
     @Override
     public boolean update(Author author) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, author);
             preparedStatement.setLong(5, author.getId());

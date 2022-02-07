@@ -42,11 +42,11 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public BookCopy findById(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
-            preparedStatement.setLong(1,id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()){
+            preparedStatement.setLong(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? construct(resultSet) : null;
             }
 
@@ -82,6 +82,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
             throw new RepositoryException("Book copies were not found[" + ex.getMessage() + "]");
         }
     }
+
     @Override
     public BookCopy add(BookCopy bookCopy) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
@@ -90,9 +91,9 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
             settingPreparedStatement(preparedStatement, bookCopy);
             int value = preparedStatement.executeUpdate();
 
-            if (value == 1){
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
-                    if (resultSet.next()){
+            if (value == 1) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
                         bookCopy.setId(resultSet.getLong(1));
                     }
                 }
@@ -105,7 +106,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     private void settingPreparedStatement(PreparedStatement preparedStatement, BookCopy bookCopy) throws SQLException {
         preparedStatement.setString(1, bookCopy.getStatus().toString());
-        preparedStatement.setDate(2,Date.valueOf(bookCopy.getRegistrationDate()));
+        preparedStatement.setDate(2, Date.valueOf(bookCopy.getRegistrationDate()));
         preparedStatement.setInt(3, bookCopy.getPrice());
         preparedStatement.setInt(4, bookCopy.getPricePerDay());
         preparedStatement.setLong(5, bookCopy.getBookId());
@@ -117,7 +118,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, bookCopy);
-            preparedStatement.setLong(6,bookCopy.getId());
+            preparedStatement.setLong(6, bookCopy.getId());
 
             return preparedStatement.executeUpdate() == 1;
         } catch (Exception ex) {

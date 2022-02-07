@@ -112,11 +112,11 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public boolean delete(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
         ) {
-            preparedStatement.setLong(1,id);
-            try{
+            preparedStatement.setLong(1, id);
+            try {
                 connection.setAutoCommit(false);
                 deleteUserRoleLinks(connection, id);
                 preparedStatement.executeUpdate();
@@ -129,6 +129,7 @@ public class RoleRepositoryImpl implements RoleRepository {
         }
         return true;
     }
+
     private void deleteUserRoleLinks(Connection connection, Long id) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ROLE_LINKS_QUERY)) {
             preparedStatement.setLong(1, id);

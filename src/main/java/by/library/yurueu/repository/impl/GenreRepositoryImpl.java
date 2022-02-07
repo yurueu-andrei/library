@@ -36,11 +36,11 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public Genre findById(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
         ) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? construct(resultSet) : null;
             }
         } catch (Exception ex) {
@@ -57,12 +57,12 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public List<Genre> findAll() throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
         ) {
             List<Genre> genres = new ArrayList<>();
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
-                while(resultSet.next()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
                     genres.add(construct(resultSet));
                 }
                 return genres;
@@ -74,13 +74,13 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public Genre add(Genre genre) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
         ) {
-            preparedStatement.setString(1,genre.getGenreName());
+            preparedStatement.setString(1, genre.getGenreName());
             int value = preparedStatement.executeUpdate();
-            if (value == 1){
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+            if (value == 1) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                     if (resultSet.next()) {
                         genre.setId(resultSet.getLong(ID_COLUMN));
                     }

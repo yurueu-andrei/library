@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface OrderRepository {
     Order findById(Long id) throws RepositoryException;
+
     List<Order> findAll() throws RepositoryException;
+
     Order add(Order order) throws RepositoryException;
+
     boolean update(Order order) throws RepositoryException;
+
     boolean delete(Long id) throws RepositoryException;
 }

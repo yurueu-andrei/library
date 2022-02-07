@@ -42,11 +42,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book findById(Long id) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
         ) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? construct(resultSet) : null;
             }
         } catch (Exception ex) {
@@ -65,12 +65,12 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAll() throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
         ) {
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 List<Book> books = new ArrayList<>();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     books.add(construct(resultSet));
                 }
                 return books;
@@ -82,15 +82,15 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book add(Book book) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
         ) {
-            settingPreparedStatement(preparedStatement,book);
+            settingPreparedStatement(preparedStatement, book);
             int value = preparedStatement.executeUpdate();
 
-            if (value == 1){
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys();){
-                    if (resultSet.next()){
+            if (value == 1) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys();) {
+                    if (resultSet.next()) {
                         book.setId(resultSet.getLong(ID_COLUMN));
                     }
                 }
@@ -102,18 +102,18 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     private void settingPreparedStatement(PreparedStatement preparedStatement, Book book) throws SQLException {
-        preparedStatement.setString(1,book.getTitle());
-        preparedStatement.setInt(2,book.getPagesNumber());
-        preparedStatement.setString(3,book.getImagePath());
+        preparedStatement.setString(1, book.getTitle());
+        preparedStatement.setInt(2, book.getPagesNumber());
+        preparedStatement.setString(3, book.getImagePath());
     }
 
     @Override
     public boolean update(Book book) throws RepositoryException {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
         ) {
-            settingPreparedStatement(preparedStatement,book);
-            preparedStatement.setLong(4,book.getId());
+            settingPreparedStatement(preparedStatement, book);
+            preparedStatement.setLong(4, book.getId());
 
             return preparedStatement.executeUpdate() == 1;
         } catch (Exception ex) {
