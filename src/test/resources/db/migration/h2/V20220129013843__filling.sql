@@ -24,11 +24,11 @@ VALUES  ('NEW', '1998-06-06', '243', '1998-06-06','1'),
     ('NEW', '1998-06-06', '238', '1998-06-06', '4');
 
 INSERT INTO books (title, pages, image_path)
-VALUES  ('Война и мир', '1365', 'drfgfg'),
- ('Мастер и Маргарита', '638', 'rdgdrfg'),
-  ('Идиот', '496', 'rdgfdfg'),
-   ('Старик и море;', '153', 'rgdrfgdf'),
-    ('Евгений Онегин', '462', 'dfgdfg');
+VALUES  ('War and peace', '1365', 'imagepath'),
+ ('The Master and Margarita', '638', 'imagepath'),
+  ('Idiot', '496', 'imagepath'),
+   ('The old man and the sea', '153', 'imagepath'),
+    ('Eugene Onegin', '462', 'imagepath');
 
 INSERT INTO book_copies (book_copy_status, registration_date, price, price_per_day, book_id)
 VALUES  ('AVAILABLE', '2019-03-01', '1365', '150', 1),
@@ -45,10 +45,10 @@ VALUES  (1, 3),
             (5, 5);
 
 INSERT INTO genres (genre_name)
-VALUES ('Роман'),
-        ('Роман в стихах'),
-         ('Роман-эпопея'),
-          ('Повесть');
+VALUES ('novel'),
+        ('novel in verse'),
+         ('epic novel'),
+          ('story');
 
 INSERT INTO book_genre_links (book_id, genre_id)
 VALUES  (1, 3),
@@ -58,11 +58,11 @@ VALUES  (1, 3),
             (5, 2);
 
 INSERT INTO authors (first_name, last_name, birth_date, image_path)
-VALUES  ('Лев', 'Толстой', '1879-04-04', 'wregrrey'),
- ('Эрнест', 'Хемингуэй', '1903-07-07', 'rgdrfgdf'),
-  ('Михаил', 'Булгаков', '1885-10-10', 'rdgdrfg'),
-   ('Александр', 'Пушкин', '1852-02-02', 'dfgdfg'),
-    ('Фёдор', 'Достоевский', '1845-01-01', 'rdgfdfg');
+VALUES  ('Lev', 'Tolstoy', '1879-04-04', 'imagepath'),
+ ('Ernest', 'Hemingway', '1903-07-07', 'imagepath'),
+  ('Mikhail', 'Bulgakov', '1885-10-10', 'imagepath'),
+   ('Alexander', 'Pushkin', '1852-02-02', 'imagepath'),
+    ('Fedor', 'Dostoevski', '1845-01-01', 'imagepath');
 
 INSERT INTO book_author_links (book_id, author_id)
 VALUES  (1, 1),
@@ -72,7 +72,7 @@ VALUES  (1, 1),
             (5, 4);
 
 INSERT INTO book_damage (image_path, user_id, order_id, book_copy_id)
-VALUES  ('weter', '1', '1', '3'),
- ('weter', '1', '1', '2'),
-  ('weatsg', '3', '4', '1'),
-   ('iyukjyugf', '4', '5', '5');
+VALUES  ('imagepath', '1', '1', '3'),
+ ('imagepath', '1', '1', '2'),
+  ('imagepath', '3', '4', '1'),
+   ('imagepath', '4', '5', '5');
