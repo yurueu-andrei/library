@@ -45,7 +45,7 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedAuthor() throws RepositoryException {
         //given
-        Author expected = new Author("esdf", "afssd", LocalDate.of(1999,8,8), "imagepath");
+        Author expected = new Author("esdf", "afssd", LocalDate.of(1999, 8, 8), "imagepath");
         //when
         Author actual = authorRepository.add(expected);
 
@@ -56,7 +56,7 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateAuthor() throws RepositoryException {
         //given
-        Author author = new Author(2L,"esdf", "afssd", LocalDate.of(1999,8,8), "imagepath");
+        Author author = new Author(2L, "esdf", "afssd", LocalDate.of(1999, 8, 8), "imagepath");
 
         // when
         boolean isUpdated = authorRepository.update(author);

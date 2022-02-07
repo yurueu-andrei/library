@@ -45,7 +45,7 @@ class UserRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedUser() throws RepositoryException {
         //given
-        User expected = new User("sergei", "take", "1645", "email235", "address123", LocalDate.of(2002,5,5));
+        User expected = new User("sergei", "take", "1645", "email235", "address123", LocalDate.of(2002, 5, 5));
 
         //when
         User actual = userRepository.add(expected);
@@ -57,7 +57,7 @@ class UserRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateUser() throws RepositoryException {
         //given
-        User user = new User(2L,"sergei", "take", "1645", "email235", "address123", LocalDate.of(2002,5,5));
+        User user = new User(2L, "sergei", "take", "1645", "email235", "address123", LocalDate.of(2002, 5, 5));
 
         // when
         boolean isUpdated = userRepository.update(user);

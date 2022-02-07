@@ -56,11 +56,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillUsers() {
         users = new ArrayList<>() {{
-            add(new User(1L,"vlad", "kaliaha", "1111", "email1", "address1", LocalDate.of(2005, 6, 6)));
-            add(new User(2L,"andrei", "yurueu", "2222", "email2", "address2", LocalDate.of(2001, 6, 6)));
-            add(new User(3L,"yaroslav", "vasilevski", "3333", "email3", "address3", LocalDate.of(1998, 6, 6)));
-            add(new User(4L,"nastya", "yurkova", "4444", "email4", "address4", LocalDate.of(1999, 6, 6)));
-            add(new User(5L,"alexander", "kuprijanenko", "5555", "email5", "address5", LocalDate.of(1996, 6, 6)));
+            add(new User(1L, "vlad", "kaliaha", "1111", "email1", "address1", LocalDate.of(2005, 6, 6)));
+            add(new User(2L, "andrei", "yurueu", "2222", "email2", "address2", LocalDate.of(2001, 6, 6)));
+            add(new User(3L, "yaroslav", "vasilevski", "3333", "email3", "address3", LocalDate.of(1998, 6, 6)));
+            add(new User(4L, "nastya", "yurkova", "4444", "email4", "address4", LocalDate.of(1999, 6, 6)));
+            add(new User(5L, "alexander", "kuprijanenko", "5555", "email5", "address5", LocalDate.of(1996, 6, 6)));
         }};
     }
 
@@ -89,11 +89,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillOrders() {
         orders = new ArrayList<>() {{
-            add(new Order(1L, OrderStatus.NEW, LocalDate.of(1998,6,6), LocalDate.of(1998,6,6), 243,1L));
-            add(new Order(2L, OrderStatus.NEW, LocalDate.of(1998,6,6), LocalDate.of(1998,6,6), 21, 1L));
-            add(new Order(3L, OrderStatus.NEW, LocalDate.of(1998,6,6), LocalDate.of(1998,6,6), 253,1L));
-            add(new Order(4L, OrderStatus.NEW, LocalDate.of(1998,6,6), LocalDate.of(1998,6,6), 273,3L));
-            add(new Order(5L, OrderStatus.NEW, LocalDate.of(1998,6,6), LocalDate.of(1998,6,6), 238,4L));
+            add(new Order(1L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 243, 1L));
+            add(new Order(2L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 21, 1L));
+            add(new Order(3L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 253, 1L));
+            add(new Order(4L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 273, 3L));
+            add(new Order(5L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 238, 4L));
         }};
     }
 
@@ -124,11 +124,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillBooks() {
         books = new ArrayList<>() {{
-            add(new Book(1L,"War and peace", 1365, "imagepath"));
-            add(new Book(2L,"The Master and Margarita", 638, "imagepath"));
-            add(new Book(3L,"Idiot", 496, "imagepath"));
-            add(new Book(4L,"The old man and the sea", 153, "imagepath"));
-            add(new Book(5L,"Eugene Onegin", 462, "imagepath"));
+            add(new Book(1L, "War and peace", 1365, "imagepath"));
+            add(new Book(2L, "The Master and Margarita", 638, "imagepath"));
+            add(new Book(3L, "Idiot", 496, "imagepath"));
+            add(new Book(4L, "The old man and the sea", 153, "imagepath"));
+            add(new Book(5L, "Eugene Onegin", 462, "imagepath"));
         }};
     }
 
@@ -142,10 +142,10 @@ public abstract class BaseRepositoryTest {
 
     private void fillBookDamage() {
         bookDamage = new ArrayList<>() {{
-            add(new BookDamage(1L,"imagepath", 1L, 1L, 3L));
-            add(new BookDamage(2L,"imagepath", 1L, 1L, 2L));
-            add(new BookDamage(3L,"imagepath", 3L, 4L, 1L));
-            add(new BookDamage(4L,"imagepath", 4L, 5L, 5L));
+            add(new BookDamage(1L, "imagepath", 1L, 1L, 3L));
+            add(new BookDamage(2L, "imagepath", 1L, 1L, 2L));
+            add(new BookDamage(3L, "imagepath", 3L, 4L, 1L));
+            add(new BookDamage(4L, "imagepath", 4L, 5L, 5L));
         }};
     }
 
@@ -159,11 +159,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillBookCopies() {
         bookCopies = new ArrayList<>() {{
-            add(new BookCopy(1L,BookCopyStatus.AVAILABLE, LocalDate.of(2019,3,1), 1365, 150, 1L));
-            add(new BookCopy(2L,BookCopyStatus.AVAILABLE, LocalDate.of(2020,6,1), 1638, 210, 2L));
-            add(new BookCopy(3L,BookCopyStatus.AVAILABLE, LocalDate.of(2021,8,4), 2496, 225, 2L));
-            add(new BookCopy(4L,BookCopyStatus.AVAILABLE, LocalDate.of(2017,10,10), 937, 128, 5L));
-            add(new BookCopy(5L,BookCopyStatus.AVAILABLE, LocalDate.of(2020,6,2), 1007, 311, 3L));
+            add(new BookCopy(1L, BookCopyStatus.AVAILABLE, LocalDate.of(2019, 3, 1), 1365, 150, 1L));
+            add(new BookCopy(2L, BookCopyStatus.AVAILABLE, LocalDate.of(2020, 6, 1), 1638, 210, 2L));
+            add(new BookCopy(3L, BookCopyStatus.AVAILABLE, LocalDate.of(2021, 8, 4), 2496, 225, 2L));
+            add(new BookCopy(4L, BookCopyStatus.AVAILABLE, LocalDate.of(2017, 10, 10), 937, 128, 5L));
+            add(new BookCopy(5L, BookCopyStatus.AVAILABLE, LocalDate.of(2020, 6, 2), 1007, 311, 3L));
         }};
     }
 
@@ -177,11 +177,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillAuthors() {
         authors = new ArrayList<>() {{
-            add(new Author(1L,"Lev", "Tolstoy", LocalDate.of(1879,4,4), "imagepath"));
-            add(new Author(2L,"Ernest", "Hemingway", LocalDate.of(1903,7,7), "imagepath"));
-            add(new Author(3L,"Mikhail", "Bulgakov", LocalDate.of(1885,10,10), "imagepath"));
-            add(new Author(4L,"Alexander", "Pushkin", LocalDate.of(1852,2,2), "imagepath"));
-            add(new Author(5L,"Fedor", "Dostoevski", LocalDate.of(1845,1,1), "imagepath"));
+            add(new Author(1L, "Lev", "Tolstoy", LocalDate.of(1879, 4, 4), "imagepath"));
+            add(new Author(2L, "Ernest", "Hemingway", LocalDate.of(1903, 7, 7), "imagepath"));
+            add(new Author(3L, "Mikhail", "Bulgakov", LocalDate.of(1885, 10, 10), "imagepath"));
+            add(new Author(4L, "Alexander", "Pushkin", LocalDate.of(1852, 2, 2), "imagepath"));
+            add(new Author(5L, "Fedor", "Dostoevski", LocalDate.of(1845, 1, 1), "imagepath"));
         }};
     }
 

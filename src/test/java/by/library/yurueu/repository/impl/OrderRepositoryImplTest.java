@@ -47,7 +47,7 @@ class OrderRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedOrder() throws RepositoryException {
         //given
-        Order expected = new Order(OrderStatus.NEW, LocalDate.of(1999,7,6), LocalDate.of(1988,5,6), 223,4L);
+        Order expected = new Order(OrderStatus.NEW, LocalDate.of(1999, 7, 6), LocalDate.of(1988, 5, 6), 223, 4L);
         //when
         Order actual = orderRepository.add(expected);
 
@@ -58,7 +58,7 @@ class OrderRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateOrder() throws RepositoryException {
         //given
-        Order order = new Order(2L, OrderStatus.NEW, LocalDate.of(1998,6,6), LocalDate.of(1998,6,6), 243,1L);
+        Order order = new Order(2L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 243, 1L);
 
         // when
         boolean isUpdated = orderRepository.update(order);

@@ -44,7 +44,7 @@ class BookDamageRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBookDamage() throws RepositoryException {
         //given
-        BookDamage expected = new BookDamage("imagepath", 1L,2L,3L);
+        BookDamage expected = new BookDamage("imagepath", 1L, 2L, 3L);
         //when
         BookDamage actual = bookDamageRepository.add(expected);
 
@@ -55,7 +55,7 @@ class BookDamageRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateBookDamage() throws RepositoryException {
         //given
-        BookDamage bookDamage = new BookDamage(2L, "imagepath", 2L,2L,2L);
+        BookDamage bookDamage = new BookDamage(2L, "imagepath", 2L, 2L, 2L);
 
         // when
         boolean isUpdated = bookDamageRepository.update(bookDamage);

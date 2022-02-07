@@ -46,7 +46,7 @@ class BookCopyRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBookCopy() throws RepositoryException {
         //given
-        BookCopy expected = new BookCopy(BookCopyStatus.AVAILABLE, LocalDate.of(2000,1,1), 70, 13, 2L);
+        BookCopy expected = new BookCopy(BookCopyStatus.AVAILABLE, LocalDate.of(2000, 1, 1), 70, 13, 2L);
         //when
         BookCopy actual = bookCopyRepository.add(expected);
 
@@ -57,7 +57,7 @@ class BookCopyRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateBookCopy() throws RepositoryException {
         //given
-        BookCopy bookCopy = new BookCopy(2L, BookCopyStatus.AVAILABLE, LocalDate.of(2000,1,1), 70, 13, 2L);
+        BookCopy bookCopy = new BookCopy(2L, BookCopyStatus.AVAILABLE, LocalDate.of(2000, 1, 1), 70, 13, 2L);
 
         // when
         boolean isUpdated = bookCopyRepository.update(bookCopy);
