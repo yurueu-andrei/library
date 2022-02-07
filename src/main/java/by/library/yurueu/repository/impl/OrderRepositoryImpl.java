@@ -26,7 +26,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM orders WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM orders";
     private static final String INSERT_QUERY =
-            "INSERT INTO orders (order_status, start_date, end_date, price, user_id) VALUES (?,?,?,?)";
+            "INSERT INTO orders (order_status, start_date, end_date, price, user_id) VALUES (?,?,?,?,?)";
     private static final String UPDATE_QUERY =
             "UPDATE orders SET order_status=?, start_date=?, end_date=?, price=?, user_id=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM orders WHERE id=?";
@@ -114,7 +114,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public boolean update(Order order) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
         ) {
             settingPreparedStatement(preparedStatement, order);
             preparedStatement.setLong(6, order.getId());

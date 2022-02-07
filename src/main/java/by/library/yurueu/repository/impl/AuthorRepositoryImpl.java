@@ -42,6 +42,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
+            preparedStatement.setLong(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 return resultSet.next() ? construct(resultSet) : null;
             }

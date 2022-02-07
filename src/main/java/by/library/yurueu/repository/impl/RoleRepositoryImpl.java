@@ -99,7 +99,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public boolean update(Role role) throws RepositoryException {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
         ) {
             settingPreparedStatement(preparedStatement, role);
             preparedStatement.setLong(2, role.getId());

@@ -26,9 +26,9 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM book_copies WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM book_copies";
     private static final String INSERT_QUERY =
-            "INSERT INTO book_copies (registration_date, price, price_per_day, book_id) VALUES (?,?,?,?)";
+            "INSERT INTO book_copies (book_copy_status, registration_date, price, price_per_day, book_id) VALUES (?,?,?,?,?)";
     private static final String UPDATE_QUERY =
-            "UPDATE book_copies SET registration_date=?, price=?, price_per_day=?, book_id=? WHERE id=?";
+            "UPDATE book_copies SET book_copy_status=?, registration_date=?, price=?, price_per_day=?, book_id=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM book_copies WHERE id=?";
 
     private static final String DELETE_ORDER_BOOK_COPY_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE book_copy_id=?";
@@ -104,11 +104,11 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
     }
 
     private void settingPreparedStatement(PreparedStatement preparedStatement, BookCopy bookCopy) throws SQLException {
-        preparedStatement.setDate(1,Date.valueOf(bookCopy.getRegistrationDate()));
-        preparedStatement.setInt(2, bookCopy.getPrice());
-        preparedStatement.setInt(3, bookCopy.getPricePerDay());
-        preparedStatement.setLong(4, bookCopy.getBookId());
-        preparedStatement.setString(5, bookCopy.getStatus().toString());
+        preparedStatement.setString(1, bookCopy.getStatus().toString());
+        preparedStatement.setDate(2,Date.valueOf(bookCopy.getRegistrationDate()));
+        preparedStatement.setInt(3, bookCopy.getPrice());
+        preparedStatement.setInt(4, bookCopy.getPricePerDay());
+        preparedStatement.setLong(5, bookCopy.getBookId());
     }
 
     @Override

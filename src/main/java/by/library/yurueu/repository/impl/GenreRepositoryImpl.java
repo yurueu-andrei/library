@@ -23,7 +23,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     private static final String INSERT_QUERY =
             "INSERT INTO genres (genre_name) VALUES (?)";
     private static final String UPDATE_QUERY =
-            "UPDATE genres SET genre_name = ? WHERE id=?";
+            "UPDATE genres SET genre_name=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM genres WHERE id=?";
 
     private static final String DELETE_BOOK_GENRE_LINKS_QUERY = "DELETE FROM book_genre_links WHERE genre_id=?";
@@ -39,6 +39,7 @@ public class GenreRepositoryImpl implements GenreRepository {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
         ) {
+            preparedStatement.setLong(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 return resultSet.next() ? construct(resultSet) : null;
             }
@@ -96,8 +97,8 @@ public class GenreRepositoryImpl implements GenreRepository {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
         ) {
-            preparedStatement.setLong(1, genre.getId());
-            preparedStatement.setString(2, genre.getGenreName());
+            preparedStatement.setString(1, genre.getGenreName());
+            preparedStatement.setLong(2, genre.getId());
 
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException ex) {
