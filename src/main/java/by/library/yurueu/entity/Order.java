@@ -1,8 +1,16 @@
 package by.library.yurueu.entity;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
-public class Order {
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Order extends BaseEntity {
     private Long id;
     private OrderStatus orderStatus;
     private LocalDate startDate;
@@ -10,127 +18,13 @@ public class Order {
     private int price;
     private Long userId;
 
-    public Order() {}
-
+    @Builder
     public Order(Long id, OrderStatus orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
-        this.id = id;
+        setId(id);
         this.orderStatus = orderStatus;
         this.startDate = startDate;
         this.endDate = endDate;
         this.price = price;
         this.userId = userId;
-    }
-
-    public Order(OrderStatus orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
-        this.orderStatus = orderStatus;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.price = price;
-        this.userId = userId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {return true;}
-        if (obj == null || getClass() != obj.getClass()) {return false;}
-
-        Order aThat = (Order) obj;
-
-        if(getId() == null) {
-            if(aThat.getId() != null) {return false;}
-        } else if(!getId().equals(aThat.getId())) { return false;}
-
-        if(getOrderStatus() == null) {
-            if(aThat.getOrderStatus() != null) {return false;}
-        } else if(!getOrderStatus().equals(aThat.getOrderStatus())) { return false;}
-
-        if(getStartDate() == null) {
-            if(aThat.getStartDate() != null) {return false;}
-        } else if(!getStartDate().equals(aThat.getStartDate())) { return false;}
-
-        if(getEndDate() == null) {
-            if(aThat.getEndDate() != null) {return false;}
-        } else if(!getEndDate().equals(aThat.getEndDate())) { return false;}
-
-        if(getPrice() != aThat.getPrice()) {return false;}
-
-        if(getUserId() == null) {
-            return aThat.getUserId() == null;
-        } else return getUserId().equals(aThat.getUserId());
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (getId() != null ? getId().hashCode() : 0);
-        result = prime * result + (getOrderStatus() != null ? getOrderStatus().hashCode() : 0);
-        result = prime * result + (getStartDate() != null ? getStartDate().hashCode() : 0);
-        result = prime * result + (getEndDate() != null ? getEndDate().hashCode() : 0);
-        result = prime * result + (getUserId() != null ? getUserId().hashCode() : 0);
-        result = prime * result + getPrice();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder()
-                .append(getClass().getSimpleName())
-                .append("{id=").append(getId())
-                .append(", orderStatus=").append(getOrderStatus())
-                .append(", startDate=").append(getStartDate())
-                .append(", endDate=").append(getEndDate())
-                .append(", price=").append(getPrice())
-                .append(", userId=").append(getUserId())
-                .append("}");
-        return sb.toString();
     }
 }
