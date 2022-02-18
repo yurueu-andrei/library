@@ -20,6 +20,8 @@ public class Runner {
 //        flywayService.migrate();
 
 
+
+
         User user = new User();
 //        BookRepository bookRepository = new BookRepositoryImpl(dataSource);
 //        GenreRepository genreRepository = new GenreRepositoryImpl(dataSource);
