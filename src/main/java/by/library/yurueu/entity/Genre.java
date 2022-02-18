@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Genre extends BaseEntity {
-    private Long id;
     private String genreName;
+
     @Builder
     public Genre(Long id, String genreName) {
         setId(id);
