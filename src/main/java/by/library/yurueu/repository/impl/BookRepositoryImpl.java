@@ -1,19 +1,18 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Book;
-import by.library.yurueu.exception.RepositoryException;
+import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.BookRepository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookRepositoryImpl implements BookRepository {
+public class BookRepositoryImpl extends AbstractRepositoryImpl<Book> implements AbstractRepository<Book>, BookRepository {
     private static final String ID_COLUMN = "id";
     private static final String TITLE_COLUMN = "title";
     private static final String PAGES_COLUMN = "pages";
@@ -34,27 +33,36 @@ public class BookRepositoryImpl implements BookRepository {
     private static final String DELETE_BOOK_DAMAGE_QUERY = "DELETE FROM book_damage WHERE book_copy_id=?";
     private static final String DELETE_ORDER_BOOK_COPY_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE book_copy_id=?";
 
-    private final DataSource dataSource;
-
     public BookRepositoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
     @Override
-    public Book findById(Long id) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
-        ) {
-            preparedStatement.setLong(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next() ? construct(resultSet) : null;
-            }
-        } catch (Exception ex) {
-            throw new RepositoryException("User was not found[" + ex.getMessage() + "]");
-        }
+    protected String getSelectByIdQuery() {
+        return SELECT_BY_ID_QUERY;
     }
 
-    private Book construct(ResultSet resultSet) throws SQLException {
+    @Override
+    protected String getSelectAllQuery() {
+        return SELECT_ALL_QUERY;
+    }
+
+    @Override
+    protected String getInsertQuery() {
+        return INSERT_QUERY;
+    }
+
+    @Override
+    protected String getUpdateQuery() {
+        return UPDATE_QUERY;
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_QUERY;
+    }
+
+    protected Book construct(ResultSet resultSet) throws SQLException {
         Book book = new Book();
         book.setId(resultSet.getLong(ID_COLUMN));
         book.setTitle(resultSet.getString(TITLE_COLUMN));
@@ -63,87 +71,19 @@ public class BookRepositoryImpl implements BookRepository {
         return book;
     }
 
-    @Override
-    public List<Book> findAll() throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
-        ) {
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                List<Book> books = new ArrayList<>();
-                while (resultSet.next()) {
-                    books.add(construct(resultSet));
-                }
-                return books;
-            }
-        } catch (Exception ex) {
-            throw new RepositoryException("Books were not found[" + ex.getMessage() + "]");
-        }
-    }
-
-    @Override
-    public Book add(Book book) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
-        ) {
-            settingPreparedStatement(preparedStatement, book);
-            int value = preparedStatement.executeUpdate();
-
-            if (value == 1) {
-                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    if (resultSet.next()) {
-                        book.setId(resultSet.getLong(ID_COLUMN));
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            throw new RepositoryException("Book was not added[" + ex.getMessage() + "]");
-        }
-        return book;
-    }
-
-    private void settingPreparedStatement(PreparedStatement preparedStatement, Book book) throws SQLException {
+    protected void settingPreparedStatement(PreparedStatement preparedStatement, Book book) throws SQLException {
         preparedStatement.setString(1, book.getTitle());
         preparedStatement.setInt(2, book.getPagesNumber());
         preparedStatement.setString(3, book.getImagePath());
     }
 
-    @Override
-    public boolean update(Book book) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
-        ) {
-            settingPreparedStatement(preparedStatement, book);
-            preparedStatement.setLong(4, book.getId());
-
-            return preparedStatement.executeUpdate() == 1;
-        } catch (Exception ex) {
-            throw new RepositoryException("Book was not updated[" + ex.getMessage() + "]");
-        }
+    protected void deleteLinks(Connection connection, Long id) throws SQLException {
+        deleteBookGenreLinks(connection, id);
+        deleteBookAuthorLinks(connection, id);
+        deleteBooksBookCopies(connection, id);
     }
 
-    @Override
-    public boolean delete(Long id) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
-        ) {
-            preparedStatement.setLong(1, id);
-            try {
-                connection.setAutoCommit(false);
-                deleteBookGenreLinks(connection, id);
-                deleteBookAuthorLinks(connection, id);
-                deleteBooksBookCopies(connection, id);
-                preparedStatement.executeUpdate();
-                connection.commit();
-            } finally {
-                connection.setAutoCommit(true);
-            }
-        } catch (Exception ex) {
-            throw new RepositoryException("Order was not deleted [" + ex.getMessage() + "]");
-        }
-        return true;
-    }
-
-    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
+    private void deleteBookLinks(Connection connection, Long id, String query) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -151,11 +91,11 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     private void deleteBookAuthorLinks(Connection connection, Long bookId) throws SQLException {
-        deleteLinks(connection, bookId, DELETE_BOOK_AUTHOR_LINKS_QUERY);
+        deleteBookLinks(connection, bookId, DELETE_BOOK_AUTHOR_LINKS_QUERY);
     }
 
     private void deleteBookGenreLinks(Connection connection, Long bookId) throws SQLException {
-        deleteLinks(connection, bookId, DELETE_BOOK_GENRE_LINKS_QUERY);
+        deleteBookLinks(connection, bookId, DELETE_BOOK_GENRE_LINKS_QUERY);
     }
 
     private void deleteBooksBookCopies(Connection connection, Long bookId) throws SQLException {
@@ -175,17 +115,17 @@ public class BookRepositoryImpl implements BookRepository {
 
     private void deleteBookDamage(Connection connection, List<Long> bookCopiesId) throws SQLException {
         for (Long bookId : bookCopiesId) {
-            deleteLinks(connection, bookId, DELETE_BOOK_DAMAGE_QUERY);
+            deleteBookLinks(connection, bookId, DELETE_BOOK_DAMAGE_QUERY);
         }
     }
 
     private void deleteOrderBookCopyLinks(Connection connection, List<Long> bookCopiesId) throws SQLException {
         for (Long bookId : bookCopiesId) {
-            deleteLinks(connection, bookId, DELETE_ORDER_BOOK_COPY_LINKS_QUERY);
+            deleteBookLinks(connection, bookId, DELETE_ORDER_BOOK_COPY_LINKS_QUERY);
         }
     }
 
     private void deleteBookCopies(Connection connection, Long bookId) throws SQLException {
-        deleteLinks(connection, bookId, DELETE_BOOK_COPIES_QUERY);
+        deleteBookLinks(connection, bookId, DELETE_BOOK_COPIES_QUERY);
     }
 }
