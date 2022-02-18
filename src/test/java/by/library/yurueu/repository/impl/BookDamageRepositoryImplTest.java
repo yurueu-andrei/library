@@ -3,7 +3,6 @@ package by.library.yurueu.repository.impl;
 import by.library.yurueu.entity.BookDamage;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BaseRepositoryTest;
-import by.library.yurueu.repository.BookDamageRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 class BookDamageRepositoryImplTest extends BaseRepositoryTest {
 
-    private final BookDamageRepository bookDamageRepository;
+    private final BookDamageRepositoryImpl bookDamageRepository;
 
     public BookDamageRepositoryImplTest() {
         bookDamageRepository = new BookDamageRepositoryImpl(getDataSource());
@@ -44,7 +43,8 @@ class BookDamageRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBookDamage() throws RepositoryException {
         //given
-        BookDamage expected = new BookDamage("imagepath", 1L, 2L, 3L);
+        BookDamage expected = BookDamage.builder().imagePath("imagepath").userId(1L).orderId(2L).bookCopyId(3L).build();
+
         //when
         BookDamage actual = bookDamageRepository.add(expected);
 
@@ -55,7 +55,7 @@ class BookDamageRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateBookDamage() throws RepositoryException {
         //given
-        BookDamage bookDamage = new BookDamage(2L, "imagepath", 2L, 2L, 2L);
+        BookDamage bookDamage = BookDamage.builder().id(2L).imagePath("imagepath").userId(1L).orderId(2L).bookCopyId(3L).build();
 
         // when
         boolean isUpdated = bookDamageRepository.update(bookDamage);

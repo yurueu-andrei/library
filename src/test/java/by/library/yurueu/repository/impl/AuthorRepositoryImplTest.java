@@ -2,7 +2,6 @@ package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Author;
 import by.library.yurueu.exception.RepositoryException;
-import by.library.yurueu.repository.AuthorRepository;
 import by.library.yurueu.repository.BaseRepositoryTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ import java.util.List;
 
 class AuthorRepositoryImplTest extends BaseRepositoryTest {
 
-    private final AuthorRepository authorRepository;
+    private final AuthorRepositoryImpl authorRepository;
 
     public AuthorRepositoryImplTest() {
         authorRepository = new AuthorRepositoryImpl(getDataSource());
@@ -45,7 +44,8 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedAuthor() throws RepositoryException {
         //given
-        Author expected = new Author("esdf", "afssd", LocalDate.of(1999, 8, 8), "imagepath");
+        Author expected = Author.builder().firstName("afssd").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
+
         //when
         Author actual = authorRepository.add(expected);
 
@@ -56,7 +56,7 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateAuthor() throws RepositoryException {
         //given
-        Author author = new Author(2L, "esdf", "afssd", LocalDate.of(1999, 8, 8), "imagepath");
+        Author author = Author.builder().id(2L).firstName("esdf").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
 
         // when
         boolean isUpdated = authorRepository.update(author);

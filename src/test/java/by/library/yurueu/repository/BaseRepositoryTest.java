@@ -56,11 +56,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillUsers() {
         users = new ArrayList<>() {{
-            add(new User(1L, "vlad", "kaliaha", "1111", "email1", "address1", LocalDate.of(2005, 6, 6)));
-            add(new User(2L, "andrei", "yurueu", "2222", "email2", "address2", LocalDate.of(2001, 6, 6)));
-            add(new User(3L, "yaroslav", "vasilevski", "3333", "email3", "address3", LocalDate.of(1998, 6, 6)));
-            add(new User(4L, "nastya", "yurkova", "4444", "email4", "address4", LocalDate.of(1999, 6, 6)));
-            add(new User(5L, "alexander", "kuprijanenko", "5555", "email5", "address5", LocalDate.of(1996, 6, 6)));
+            add(User.builder().id(1L).firstName("vlad").lastName("kaliaha").passportNumber("1111").email("email1").address("address1").birthDate(LocalDate.of(2005, 6, 6)).build());
+            add(User.builder().id(2L).firstName("andrei").lastName("yurueu").passportNumber("2222").email("email2").address("address2").birthDate(LocalDate.of(2001, 6, 6)).build());
+            add(User.builder().id(3L).firstName("yaroslav").lastName("vasilevski").passportNumber("3333").email("email3").address("address3").birthDate(LocalDate.of(1998, 6, 6)).build());
+            add(User.builder().id(4L).firstName("nastya").lastName("yurkova").passportNumber("4444").email("email4").address("address4").birthDate(LocalDate.of(1999, 6, 6)).build());
+            add(User.builder().id(5L).firstName("alexander").lastName("kuprijanenko").passportNumber("5555").email("email5").address("address5").birthDate(LocalDate.of(1996, 6, 6)).build());
         }};
     }
 
@@ -74,8 +74,8 @@ public abstract class BaseRepositoryTest {
 
     private void fillRoles() {
         roles = new ArrayList<>() {{
-            add(new Role(1L, "admin"));
-            add(new Role(2L, "user"));
+            add(Role.builder().id(1L).roleName("admin").build());
+            add(Role.builder().id(2L).roleName("user").build());
         }};
     }
 
@@ -89,11 +89,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillOrders() {
         orders = new ArrayList<>() {{
-            add(new Order(1L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 243, 1L));
-            add(new Order(2L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 21, 1L));
-            add(new Order(3L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 253, 1L));
-            add(new Order(4L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 273, 3L));
-            add(new Order(5L, OrderStatus.NEW, LocalDate.of(1998, 6, 6), LocalDate.of(1998, 6, 6), 238, 4L));
+            add(Order.builder().id(1L).orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1998, 6, 6)).endDate(LocalDate.of(1998, 6, 6)).price(243).userId(1L).build());
+            add(Order.builder().id(2L).orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1998, 6, 6)).endDate(LocalDate.of(1998, 6, 6)).price(21).userId(1L).build());
+            add(Order.builder().id(3L).orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1998, 6, 6)).endDate(LocalDate.of(1998, 6, 6)).price(253).userId(1L).build());
+            add(Order.builder().id(4L).orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1998, 6, 6)).endDate(LocalDate.of(1998, 6, 6)).price(273).userId(3L).build());
+            add(Order.builder().id(5L).orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1998, 6, 6)).endDate(LocalDate.of(1998, 6, 6)).price(238).userId(4L).build());
         }};
     }
 
@@ -107,10 +107,10 @@ public abstract class BaseRepositoryTest {
 
     private void fillGenres() {
         genres = new ArrayList<>() {{
-            add(new Genre(1L, "novel"));
-            add(new Genre(2L, "novel in verse"));
-            add(new Genre(3L, "epic novel"));
-            add(new Genre(4L, "story"));
+            add(Genre.builder().id(1L).genreName("novel").build());
+            add(Genre.builder().id(2L).genreName("novel in verse").build());
+            add(Genre.builder().id(3L).genreName("epic novel").build());
+            add(Genre.builder().id(4L).genreName("story").build());
         }};
     }
 
@@ -124,11 +124,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillBooks() {
         books = new ArrayList<>() {{
-            add(new Book(1L, "War and peace", 1365, "imagepath"));
-            add(new Book(2L, "The Master and Margarita", 638, "imagepath"));
-            add(new Book(3L, "Idiot", 496, "imagepath"));
-            add(new Book(4L, "The old man and the sea", 153, "imagepath"));
-            add(new Book(5L, "Eugene Onegin", 462, "imagepath"));
+            add(Book.builder().id(1L).title("War and peace").pagesNumber(1365).imagePath("imagepath").build());
+            add(Book.builder().id(2L).title("The Master and Margarita").pagesNumber(638).imagePath("imagepath").build());
+            add(Book.builder().id(3L).title("Idiot").pagesNumber(496).imagePath("imagepath").build());
+            add(Book.builder().id(4L).title("The old man and the sea").pagesNumber(153).imagePath("imagepath").build());
+            add(Book.builder().id(5L).title("Eugene Onegin").pagesNumber(462).imagePath("imagepath").build());
         }};
     }
 
@@ -142,10 +142,10 @@ public abstract class BaseRepositoryTest {
 
     private void fillBookDamage() {
         bookDamage = new ArrayList<>() {{
-            add(new BookDamage(1L, "imagepath", 1L, 1L, 3L));
-            add(new BookDamage(2L, "imagepath", 1L, 1L, 2L));
-            add(new BookDamage(3L, "imagepath", 3L, 4L, 1L));
-            add(new BookDamage(4L, "imagepath", 4L, 5L, 5L));
+            add(BookDamage.builder().id(1L).imagePath("imagepath").userId(1L).orderId(1L).bookCopyId(3L).build());
+            add(BookDamage.builder().id(2L).imagePath("imagepath").userId(1L).orderId(1L).bookCopyId(2L).build());
+            add(BookDamage.builder().id(3L).imagePath("imagepath").userId(3L).orderId(4L).bookCopyId(1L).build());
+            add(BookDamage.builder().id(4L).imagePath("imagepath").userId(4L).orderId(5L).bookCopyId(5L).build());
         }};
     }
 
@@ -159,11 +159,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillBookCopies() {
         bookCopies = new ArrayList<>() {{
-            add(new BookCopy(1L, BookCopyStatus.AVAILABLE, LocalDate.of(2019, 3, 1), 1365, 150, 1L));
-            add(new BookCopy(2L, BookCopyStatus.AVAILABLE, LocalDate.of(2020, 6, 1), 1638, 210, 2L));
-            add(new BookCopy(3L, BookCopyStatus.AVAILABLE, LocalDate.of(2021, 8, 4), 2496, 225, 2L));
-            add(new BookCopy(4L, BookCopyStatus.AVAILABLE, LocalDate.of(2017, 10, 10), 937, 128, 5L));
-            add(new BookCopy(5L, BookCopyStatus.AVAILABLE, LocalDate.of(2020, 6, 2), 1007, 311, 3L));
+            add(BookCopy.builder().id(1L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2019, 3, 1)).price(1365).pricePerDay(150).bookId(1L).build());
+            add(BookCopy.builder().id(2L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2020, 6, 1)).price(1638).pricePerDay(210).bookId(2L).build());
+            add(BookCopy.builder().id(3L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2021, 8, 4)).price(2496).pricePerDay(225).bookId(2L).build());
+            add(BookCopy.builder().id(4L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2017, 10, 10)).price(937).pricePerDay(128).bookId(5L).build());
+            add(BookCopy.builder().id(5L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2020, 6, 2)).price(1007).pricePerDay(311).bookId(3L).build());
         }};
     }
 
@@ -177,11 +177,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillAuthors() {
         authors = new ArrayList<>() {{
-            add(new Author(1L, "Lev", "Tolstoy", LocalDate.of(1879, 4, 4), "imagepath"));
-            add(new Author(2L, "Ernest", "Hemingway", LocalDate.of(1903, 7, 7), "imagepath"));
-            add(new Author(3L, "Mikhail", "Bulgakov", LocalDate.of(1885, 10, 10), "imagepath"));
-            add(new Author(4L, "Alexander", "Pushkin", LocalDate.of(1852, 2, 2), "imagepath"));
-            add(new Author(5L, "Fedor", "Dostoevski", LocalDate.of(1845, 1, 1), "imagepath"));
+            add(Author.builder().id(1L).firstName("Lev").lastName("Tolstoy").birthDate(LocalDate.of(1879, 4, 4)).imagePath("imagepath").build());
+            add(Author.builder().id(2L).firstName("Ernest").lastName("Hemingway").birthDate(LocalDate.of(1903, 7, 7)).imagePath("imagepath").build());
+            add(Author.builder().id(3L).firstName("Mikhail").lastName("Bulgakov").birthDate(LocalDate.of(1885, 10, 10)).imagePath("imagepath").build());
+            add(Author.builder().id(4L).firstName("Alexander").lastName("Pushkin").birthDate(LocalDate.of(1852, 2, 2)).imagePath("imagepath").build());
+            add(Author.builder().id(5L).firstName("Fedor").lastName("Dostoevski").birthDate(LocalDate.of(1845, 1, 1)).imagePath("imagepath").build());
         }};
     }
 

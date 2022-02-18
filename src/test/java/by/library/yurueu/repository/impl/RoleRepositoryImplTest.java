@@ -3,14 +3,13 @@ package by.library.yurueu.repository.impl;
 import by.library.yurueu.entity.Role;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BaseRepositoryTest;
-import by.library.yurueu.repository.RoleRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class RoleRepositoryImplTest extends BaseRepositoryTest {
-    private final RoleRepository roleRepository;
+    private final RoleRepositoryImpl roleRepository;
 
     public RoleRepositoryImplTest() {
         roleRepository = new RoleRepositoryImpl(getDataSource());
@@ -43,7 +42,7 @@ class RoleRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedRole() throws RepositoryException {
         //given
-        Role expected = new Role("superUser");
+        Role expected = Role.builder().roleName("superUser").build();
 
         //when
         Role actual = roleRepository.add(expected);
@@ -55,7 +54,7 @@ class RoleRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateRole() throws RepositoryException {
         //given
-        Role role = new Role(2L, "wrg");
+        Role role = Role.builder().id(2L).roleName("wrg").build();
 
         // when
         boolean isUpdated = roleRepository.update(role);

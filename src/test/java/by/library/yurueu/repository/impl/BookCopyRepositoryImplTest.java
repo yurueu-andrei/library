@@ -4,7 +4,6 @@ import by.library.yurueu.entity.BookCopy;
 import by.library.yurueu.entity.BookCopyStatus;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BaseRepositoryTest;
-import by.library.yurueu.repository.BookCopyRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 class BookCopyRepositoryImplTest extends BaseRepositoryTest {
 
-    private final BookCopyRepository bookCopyRepository;
+    private final BookCopyRepositoryImpl bookCopyRepository;
 
     public BookCopyRepositoryImplTest() {
         bookCopyRepository = new BookCopyRepositoryImpl(getDataSource());
@@ -46,7 +45,8 @@ class BookCopyRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBookCopy() throws RepositoryException {
         //given
-        BookCopy expected = new BookCopy(BookCopyStatus.AVAILABLE, LocalDate.of(2000, 1, 1), 70, 13, 2L);
+        BookCopy expected = BookCopy.builder().status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2000, 1, 1)).price(70).pricePerDay(13).bookId(2L).build();
+
         //when
         BookCopy actual = bookCopyRepository.add(expected);
 
@@ -57,7 +57,7 @@ class BookCopyRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateBookCopy() throws RepositoryException {
         //given
-        BookCopy bookCopy = new BookCopy(2L, BookCopyStatus.AVAILABLE, LocalDate.of(2000, 1, 1), 70, 13, 2L);
+        BookCopy bookCopy = BookCopy.builder().id(2L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2000, 1, 1)).price(70).pricePerDay(13).bookId(2L).build();
 
         // when
         boolean isUpdated = bookCopyRepository.update(bookCopy);
