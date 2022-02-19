@@ -55,21 +55,28 @@ public class AuthorRepositoryImpl extends AbstractRepositoryImpl<Author> impleme
         return DELETE_QUERY;
     }
 
+    @Override
     protected Author construct(ResultSet resultSet) throws SQLException {
-        Author author = new Author();
-        author.setId(resultSet.getLong(ID_COLUMN));
-        author.setFirstName(resultSet.getString(FIRST_NAME_COLUMN));
-        author.setLastName(resultSet.getString(LAST_NAME_COLUMN));
-        author.setBirthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate());
-        author.setImagePath(resultSet.getString(IMAGE_PATH_COLUMN));
-        return author;
+        return Author.builder()
+                .id(resultSet.getLong(ID_COLUMN))
+                .firstName(resultSet.getString(FIRST_NAME_COLUMN))
+                .lastName(resultSet.getString(LAST_NAME_COLUMN))
+                .birthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate())
+                .imagePath(resultSet.getString(IMAGE_PATH_COLUMN))
+                .build();
     }
 
+    @Override
     protected void settingPreparedStatement(PreparedStatement preparedStatement, Author author) throws SQLException {
         preparedStatement.setString(1, author.getFirstName());
         preparedStatement.setString(2, author.getLastName());
         preparedStatement.setDate(3, Date.valueOf(author.getBirthDate()));
         preparedStatement.setString(4, author.getImagePath());
+    }
+
+    @Override
+    protected void deleteLinks(Connection connection, Long authorId) throws SQLException {
+        deleteAuthorLinks(connection, authorId);
     }
 
     private void deleteAuthorLinks(Connection connection, Long id) throws SQLException {
@@ -78,9 +85,4 @@ public class AuthorRepositoryImpl extends AbstractRepositoryImpl<Author> impleme
             preparedStatement.executeUpdate();
         }
     }
-
-    protected void deleteLinks(Connection connection, Long authorId) throws SQLException {
-        deleteAuthorLinks(connection, authorId);
-    }
-
 }

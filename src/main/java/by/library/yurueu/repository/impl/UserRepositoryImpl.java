@@ -32,7 +32,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl<User> implements 
     private static final String DELETE_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE user_id=?";
     private static final String DELETE_ORDERS_QUERY = "DELETE FROM orders WHERE user_id=?";
     private static final String DELETE_ORDER_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE order_id=?";
-    private static final String DELETE_BOOK_DAMAGE_QUERY = "DELETE FROM book_damage WHERE order_id=?";
+    private static final String DELETE_BOOK_DAMAGE_QUERY = "DELETE FROM book_damage WHERE user_id=?";
 
     public UserRepositoryImpl(DataSource dataSource) {
         super(dataSource);
@@ -63,18 +63,20 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl<User> implements 
         return DELETE_QUERY;
     }
 
+    @Override
     protected User construct(ResultSet resultSet) throws SQLException {
-        User user = new User();
-        user.setId(resultSet.getLong(ID_COLUMN));
-        user.setFirstName(resultSet.getString(FIRST_NAME_COLUMN));
-        user.setLastName(resultSet.getString(LAST_NAME_COLUMN));
-        user.setPassportNumber(resultSet.getString(PASSPORT_COLUMN));
-        user.setEmail(resultSet.getString(EMAIL_COLUMN));
-        user.setAddress(resultSet.getString(ADDRESS_COLUMN));
-        user.setBirthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate());
-        return user;
+        return User.builder()
+                .id(resultSet.getLong(ID_COLUMN))
+                .firstName(resultSet.getString(FIRST_NAME_COLUMN))
+                .lastName(resultSet.getString(LAST_NAME_COLUMN))
+                .passportNumber(resultSet.getString(PASSPORT_COLUMN))
+                .email(resultSet.getString(EMAIL_COLUMN))
+                .address(resultSet.getString(ADDRESS_COLUMN))
+                .birthDate(resultSet.getDate(BIRTH_DATE_COLUMN).toLocalDate())
+                .build();
     }
 
+    @Override
     protected void settingPreparedStatement(PreparedStatement preparedStatement, User user) throws SQLException {
         preparedStatement.setString(1, user.getFirstName());
         preparedStatement.setString(2, user.getLastName());
@@ -102,6 +104,10 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl<User> implements 
         }
     }
 
+    private void deleteBookDamage(Connection connection, Long userId) throws SQLException {
+        deleteUserLinks(connection, userId, DELETE_BOOK_DAMAGE_QUERY);
+    }
+
     private void deleteUserOrders(Connection connection, Long userId) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDERS_BY_USER_ID_QUERY)) {
             preparedStatement.setLong(1, userId);
@@ -116,17 +122,13 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl<User> implements 
         }
     }
 
-    private void deleteOrders(Connection connection, Long userId) throws SQLException {
-        deleteUserLinks(connection, userId, DELETE_ORDERS_QUERY);
-    }
-
     private void deleteOrdersLinks(Connection connection, List<Long> orders) throws SQLException {
         for (Long orderId : orders) {
             deleteUserLinks(connection, orderId, DELETE_ORDER_LINKS_QUERY);
         }
     }
 
-    private void deleteBookDamage(Connection connection, Long orderId) throws SQLException {
-        deleteUserLinks(connection, orderId, DELETE_BOOK_DAMAGE_QUERY);
+    private void deleteOrders(Connection connection, Long userId) throws SQLException {
+        deleteUserLinks(connection, userId, DELETE_ORDERS_QUERY);
     }
 }

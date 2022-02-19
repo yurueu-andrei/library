@@ -15,10 +15,8 @@ public class RoleRepositoryImpl extends AbstractRepositoryImpl<Role> implements 
 
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM roles WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM roles";
-    private static final String INSERT_QUERY =
-            "INSERT INTO roles (role_name) VALUES (?)";
-    private static final String UPDATE_QUERY =
-            "UPDATE roles SET role_name=? WHERE id=?";
+    private static final String INSERT_QUERY = "INSERT INTO roles (role_name) VALUES (?)";
+    private static final String UPDATE_QUERY = "UPDATE roles SET role_name=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM roles WHERE id=?";
 
     private static final String DELETE_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE role_id=?";
@@ -52,17 +50,20 @@ public class RoleRepositoryImpl extends AbstractRepositoryImpl<Role> implements 
         return DELETE_QUERY;
     }
 
+    @Override
     protected Role construct(ResultSet resultSet) throws SQLException {
-        Role role = new Role();
-        role.setId(resultSet.getLong(ID_COLUMN));
-        role.setRoleName(resultSet.getString(ROLE_NAME_COLUMN));
-        return role;
+        return Role.builder()
+                .id(resultSet.getLong(ID_COLUMN))
+                .roleName(resultSet.getString(ROLE_NAME_COLUMN))
+                .build();
     }
 
+    @Override
     protected void settingPreparedStatement(PreparedStatement preparedStatement, Role role) throws SQLException {
         preparedStatement.setString(1, role.getRoleName());
     }
 
+    @Override
     protected void deleteLinks(Connection connection, Long id) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ROLE_LINKS_QUERY)) {
             preparedStatement.setLong(1, id);

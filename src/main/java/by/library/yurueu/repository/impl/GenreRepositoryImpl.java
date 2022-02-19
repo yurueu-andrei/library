@@ -15,10 +15,8 @@ public class GenreRepositoryImpl extends AbstractRepositoryImpl<Genre> implement
 
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM genres WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM genres";
-    private static final String INSERT_QUERY =
-            "INSERT INTO genres (genre_name) VALUES (?)";
-    private static final String UPDATE_QUERY =
-            "UPDATE genres SET genre_name=? WHERE id=?";
+    private static final String INSERT_QUERY = "INSERT INTO genres (genre_name) VALUES (?)";
+    private static final String UPDATE_QUERY = "UPDATE genres SET genre_name=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM genres WHERE id=?";
 
     private static final String DELETE_BOOK_GENRE_LINKS_QUERY = "DELETE FROM book_genre_links WHERE genre_id=?";
@@ -52,15 +50,22 @@ public class GenreRepositoryImpl extends AbstractRepositoryImpl<Genre> implement
         return DELETE_QUERY;
     }
 
+    @Override
     protected Genre construct(ResultSet resultSet) throws SQLException {
-        Genre genre = new Genre();
-        genre.setId(resultSet.getLong(ID_COLUMN));
-        genre.setGenreName(resultSet.getString(GENRE_NAME_COLUMN));
-        return genre;
+        return Genre.builder()
+                .id(resultSet.getLong(ID_COLUMN))
+                .genreName(resultSet.getString(GENRE_NAME_COLUMN))
+                .build();
     }
 
+    @Override
     protected void settingPreparedStatement(PreparedStatement preparedStatement, Genre genre) throws SQLException {
         preparedStatement.setString(1, genre.getGenreName());
+    }
+
+    @Override
+    protected void deleteLinks(Connection connection, Long genreId) throws SQLException {
+        deleteGenreLinks(connection, genreId);
     }
 
     protected void deleteGenreLinks(Connection connection, Long id) throws SQLException {
@@ -68,9 +73,5 @@ public class GenreRepositoryImpl extends AbstractRepositoryImpl<Genre> implement
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
-    }
-
-    protected void deleteLinks(Connection connection, Long genreId) throws SQLException {
-        deleteGenreLinks(connection, genreId);
     }
 }

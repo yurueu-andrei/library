@@ -53,17 +53,19 @@ public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage>
         return DELETE_QUERY;
     }
 
+    @Override
     protected BookDamage construct(ResultSet resultSet) throws SQLException {
-        BookDamage bookDamage = new BookDamage();
-        bookDamage.setId(resultSet.getLong(ID_COLUMN));
-        bookDamage.setImagePath(resultSet.getString(IMAGE_PATH_COLUMN));
-        bookDamage.setDamageDescription(resultSet.getString(DAMAGE_DESCRIPTION_COLUMN));
-        bookDamage.setUserId(resultSet.getLong(USER_ID_COLUMN));
-        bookDamage.setOrderId(resultSet.getLong(ORDER_ID_COLUMN));
-        bookDamage.setBookCopyId(resultSet.getLong(BOOK_COPY_ID_COLUMN));
-        return bookDamage;
+        return BookDamage.builder()
+                .id(resultSet.getLong(ID_COLUMN))
+                .imagePath(resultSet.getString(IMAGE_PATH_COLUMN))
+                .damageDescription(resultSet.getString(DAMAGE_DESCRIPTION_COLUMN))
+                .userId(resultSet.getLong(USER_ID_COLUMN))
+                .orderId(resultSet.getLong(ORDER_ID_COLUMN))
+                .bookCopyId(resultSet.getLong(BOOK_COPY_ID_COLUMN))
+                .build();
     }
 
+    @Override
     protected void settingPreparedStatement(PreparedStatement preparedStatement, BookDamage bookDamage) throws SQLException {
         preparedStatement.setString(1, bookDamage.getImagePath());
         preparedStatement.setString(2, bookDamage.getDamageDescription());
