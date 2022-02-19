@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class BookCopy extends BaseEntity {
     private Long id;
-    private BookCopyStatus status;
+    private String status;
     private LocalDate registrationDate;
     private int price;
     private int pricePerDay;

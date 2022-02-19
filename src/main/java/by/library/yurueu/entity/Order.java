@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Order extends BaseEntity {
     private Long id;
-    private OrderStatus orderStatus;
+    private String orderStatus;
     private LocalDate startDate;
     private LocalDate endDate;
     private int price;
