@@ -1,6 +1,11 @@
 package by.library.yurueu.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -8,6 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@SuperBuilder
+@AllArgsConstructor
 public class BookCopy extends BaseEntity {
     private Long id;
     private BookCopyStatus status;
@@ -15,14 +22,4 @@ public class BookCopy extends BaseEntity {
     private int price;
     private int pricePerDay;
     private Long bookId;
-
-    @Builder
-    public BookCopy(Long id, BookCopyStatus status, LocalDate registrationDate, int price, int pricePerDay, Long bookId) {
-        setId(id);
-        this.status = status;
-        this.registrationDate = registrationDate;
-        this.price = price;
-        this.pricePerDay = pricePerDay;
-        this.bookId = bookId;
-    }
 }

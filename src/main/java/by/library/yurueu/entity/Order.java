@@ -1,6 +1,11 @@
 package by.library.yurueu.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -8,6 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@SuperBuilder
+@AllArgsConstructor
 public class Order extends BaseEntity {
     private Long id;
     private OrderStatus orderStatus;
@@ -15,14 +22,4 @@ public class Order extends BaseEntity {
     private LocalDate endDate;
     private int price;
     private Long userId;
-
-    @Builder
-    public Order(Long id, OrderStatus orderStatus, LocalDate startDate, LocalDate endDate, int price, Long userId) {
-        setId(id);
-        this.orderStatus = orderStatus;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.price = price;
-        this.userId = userId;
-    }
 }

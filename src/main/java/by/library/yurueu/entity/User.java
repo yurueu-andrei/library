@@ -1,6 +1,11 @@
 package by.library.yurueu.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -8,6 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@SuperBuilder
+@AllArgsConstructor
 public class User extends BaseEntity {
     private Long id;
     private String firstName;
@@ -16,15 +23,4 @@ public class User extends BaseEntity {
     private String email;
     private String address;
     private LocalDate birthDate;
-
-    @Builder
-    public User(Long id, String firstName, String lastName, String passportNumber, String email, String address, LocalDate birthDate) {
-        setId(id);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.passportNumber = passportNumber;
-        this.email = email;
-        this.address = address;
-        this.birthDate = birthDate;
-    }
 }
