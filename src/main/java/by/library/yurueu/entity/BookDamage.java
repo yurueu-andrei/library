@@ -1,26 +1,23 @@
 package by.library.yurueu.entity;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@SuperBuilder
+@AllArgsConstructor
 public class BookDamage extends BaseEntity {
     private Long id;
     private String imagePath;
+    private String damageDescription;
     private Long userId;
     private Long orderId;
     private Long bookCopyId;
-
-    @Builder
-    public BookDamage(Long id, String imagePath, Long userId, Long orderId, Long bookCopyId) {
-        setId(id);
-        this.imagePath = imagePath;
-        this.userId = userId;
-        this.orderId = orderId;
-        this.bookCopyId = bookCopyId;
-    }
 }

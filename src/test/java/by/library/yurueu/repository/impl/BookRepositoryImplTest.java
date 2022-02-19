@@ -3,15 +3,13 @@ package by.library.yurueu.repository.impl;
 import by.library.yurueu.entity.Book;
 import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.BaseRepositoryTest;
-import by.library.yurueu.repository.BookRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class BookRepositoryImplTest extends BaseRepositoryTest {
-
-    private final BookRepository bookRepository;
+    private final BookRepositoryImpl bookRepository;
 
     public BookRepositoryImplTest() {
         bookRepository = new BookRepositoryImpl(getDataSource());
@@ -44,24 +42,28 @@ class BookRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBook() throws RepositoryException {
         //given
-        Book expected = new Book("asd", 12, "imagepath");
+        Book expected = Book.builder().id(6L).title("asd").pagesNumber(12).imagePath("image path").build();
+        Book actual = Book.builder().title("asd").pagesNumber(12).imagePath("image path").build();
+
         //when
-        Book actual = bookRepository.add(expected);
+        actual = bookRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, bookRepository.findById(expected.getId()));
     }
 
     @Test
     void updateTest_shouldUpdateBook() throws RepositoryException {
         //given
-        Book genre = new Book(2L, "asd", 12, "imagepath");
+        Book book = Book.builder().id(2L).title("Hello").pagesNumber(12).imagePath("image path").build();
 
         // when
-        boolean isUpdated = bookRepository.update(genre);
+        boolean isUpdated = bookRepository.update(book);
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(book, bookRepository.findById(book.getId()));
     }
 
     @Test

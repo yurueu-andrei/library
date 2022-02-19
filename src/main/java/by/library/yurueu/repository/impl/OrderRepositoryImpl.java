@@ -1,21 +1,16 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Order;
-import by.library.yurueu.entity.OrderStatus;
-import by.library.yurueu.exception.RepositoryException;
 import by.library.yurueu.repository.OrderRepository;
 
-import java.util.List;
-import java.util.ArrayList;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.Date;
 
-public class OrderRepositoryImpl implements OrderRepository {
+public class OrderRepositoryImpl extends AbstractRepositoryImpl<Order> implements OrderRepository {
     private static final String ID_COLUMN = "id";
     private static final String ORDER_STATUS_COLUMN = "order_status";
     private static final String START_DATE_COLUMN = "start_date";
@@ -34,77 +29,50 @@ public class OrderRepositoryImpl implements OrderRepository {
     private static final String DELETE_ORDER_BOOK_COPY_LINKS_QUERY = "DELETE FROM order_book_copy_links WHERE order_id=?";
     private static final String DELETE_BOOK_DAMAGE_QUERY = "DELETE FROM book_damage WHERE order_id=?";
 
-    private final DataSource dataSource;
-
     public OrderRepositoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
     @Override
-    public Order findById(Long id) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)
-        ) {
-            preparedStatement.setLong(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next() ? construct(resultSet) : null;
-            }
-        } catch (Exception ex) {
-            throw new RepositoryException("Order was not found[" + ex.getMessage() + "]");
-        }
-    }
-
-    private Order construct(ResultSet resultSet) throws SQLException {
-        Order order = new Order();
-        order.setId(resultSet.getLong(ID_COLUMN));
-        order.setOrderStatus(OrderStatus.valueOf(resultSet.getString(ORDER_STATUS_COLUMN)));
-        order.setStartDate(resultSet.getDate(START_DATE_COLUMN).toLocalDate());
-        order.setEndDate(resultSet.getDate(END_DATE_COLUMN).toLocalDate());
-        order.setPrice(resultSet.getInt(PRICE_COLUMN));
-        order.setUserId(resultSet.getLong(USER_ID_COLUMN));
-        return order;
+    protected String getSelectByIdQuery() {
+        return SELECT_BY_ID_QUERY;
     }
 
     @Override
-    public List<Order> findAll() throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)
-        ) {
-            List<Order> orders = new ArrayList<>();
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    orders.add(construct(resultSet));
-                }
-            }
-            return orders;
-        } catch (Exception ex) {
-            throw new RepositoryException("Orders were not found[" + ex.getMessage() + "]");
-        }
+    protected String getSelectAllQuery() {
+        return SELECT_ALL_QUERY;
     }
 
     @Override
-    public Order add(Order order) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)
-        ) {
-            settingPreparedStatement(preparedStatement, order);
-            int value = preparedStatement.executeUpdate();
-
-            if (value == 1) {
-                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    if (resultSet.next()) {
-                        order.setId(resultSet.getLong(1));
-                    }
-                }
-            }
-            return order;
-        } catch (Exception ex) {
-            throw new RepositoryException("Order was not added[" + ex.getMessage() + "]");
-        }
+    protected String getInsertQuery() {
+        return INSERT_QUERY;
     }
 
-    private void settingPreparedStatement(PreparedStatement preparedStatement, Order order) throws SQLException {
-        preparedStatement.setString(1, order.getOrderStatus().toString());
+    @Override
+    protected String getUpdateQuery() {
+        return UPDATE_QUERY;
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_QUERY;
+    }
+
+    @Override
+    protected Order construct(ResultSet resultSet) throws SQLException {
+        return Order.builder()
+                .id(resultSet.getLong(ID_COLUMN))
+                .orderStatus(resultSet.getString(ORDER_STATUS_COLUMN))
+                .startDate(resultSet.getDate(START_DATE_COLUMN).toLocalDate())
+                .endDate(resultSet.getDate(END_DATE_COLUMN).toLocalDate())
+                .price(resultSet.getInt(PRICE_COLUMN))
+                .userId(resultSet.getLong(USER_ID_COLUMN))
+                .build();
+    }
+
+    @Override
+    protected void settingPreparedStatement(PreparedStatement preparedStatement, Order order) throws SQLException {
+        preparedStatement.setString(1, order.getOrderStatus());
         preparedStatement.setDate(2, Date.valueOf(order.getStartDate()));
         preparedStatement.setDate(3, Date.valueOf(order.getEndDate()));
         preparedStatement.setInt(4, order.getPrice());
@@ -112,52 +80,23 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public boolean update(Order order) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)
-        ) {
-            settingPreparedStatement(preparedStatement, order);
-            preparedStatement.setLong(6, order.getId());
-
-            return preparedStatement.executeUpdate() == 1;
-        } catch (Exception ex) {
-            throw new RepositoryException("Order was not added[" + ex.getMessage() + "]");
-        }
+    protected void deleteLinks(Connection connection, Long id) throws SQLException{
+        deleteOrderBookCopyLinks(connection, id);
+        deleteBookDamage(connection, id);
     }
 
-    @Override
-    public boolean delete(Long id) throws RepositoryException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)
-        ) {
-            preparedStatement.setLong(1, id);
-            try {
-                connection.setAutoCommit(false);
-                deleteOrderBookCopyLinks(connection, id);
-                deleteBookDamage(connection, id);
-                preparedStatement.executeUpdate();
-                connection.commit();
-            } finally {
-                connection.setAutoCommit(true);
-            }
-        } catch (Exception ex) {
-            throw new RepositoryException("Order was not deleted [" + ex.getMessage() + "]");
-        }
-        return true;
+    private void deleteOrderBookCopyLinks(Connection connection, Long orderId) throws SQLException {
+        deleteOrderLinks(connection, orderId, DELETE_ORDER_BOOK_COPY_LINKS_QUERY);
     }
 
-    private void deleteLinks(Connection connection, Long id, String query) throws SQLException {
+    private void deleteOrderLinks(Connection connection, Long id, String query) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
     }
 
-    private void deleteOrderBookCopyLinks(Connection connection, Long orderId) throws SQLException {
-        deleteLinks(connection, orderId, DELETE_ORDER_BOOK_COPY_LINKS_QUERY);
-    }
-
     private void deleteBookDamage(Connection connection, Long orderId) throws SQLException {
-        deleteLinks(connection, orderId, DELETE_BOOK_DAMAGE_QUERY);
+        deleteOrderLinks(connection, orderId, DELETE_BOOK_DAMAGE_QUERY);
     }
 }

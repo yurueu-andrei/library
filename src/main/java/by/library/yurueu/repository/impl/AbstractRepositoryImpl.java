@@ -1,10 +1,8 @@
 package by.library.yurueu.repository.impl;
 
-import by.library.yurueu.entity.Author;
 import by.library.yurueu.entity.BaseEntity;
-import by.library.yurueu.entity.Genre;
 import by.library.yurueu.exception.RepositoryException;
-import by.library.yurueu.repository.AbstractRepository;
+import by.library.yurueu.repository.BaseRepository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -15,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractRepositoryImpl<E extends BaseEntity> implements AbstractRepository<E> {
+public abstract class AbstractRepositoryImpl<E extends BaseEntity> implements BaseRepository<E> {
     protected static final String ID_COLUMN = "id";
 
     private final DataSource dataSource;
@@ -86,17 +84,23 @@ public abstract class AbstractRepositoryImpl<E extends BaseEntity> implements Ab
     }
 
     public boolean update(E element) throws RepositoryException {
-        String query = String.format(getUpdateQuery(), element.getId());
+        int idQueryIndex = findIdPosition(getUpdateQuery());
         try (Connection connection = getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)
+             PreparedStatement preparedStatement = connection.prepareStatement(getUpdateQuery())
         ) {
             settingPreparedStatement(preparedStatement, element);
-            preparedStatement.setLong(7, element.getId());
+            preparedStatement.setLong(idQueryIndex, element.getId());
 
             return preparedStatement.executeUpdate() == 1;
         } catch (Exception ex) {
             throw new RepositoryException(element.getClass().getSimpleName() + " was not updated [" + ex.getMessage() + "]");
         }
+    }
+
+    private int findIdPosition(String query) {
+        return (int) query.chars()
+                .filter(charId -> charId == '?')
+                .count();
     }
 
     public boolean delete(Long id) throws RepositoryException {
