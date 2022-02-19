@@ -1,15 +1,13 @@
 package by.library.yurueu.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Order extends BaseEntity {
     private Long id;
     private OrderStatus orderStatus;
