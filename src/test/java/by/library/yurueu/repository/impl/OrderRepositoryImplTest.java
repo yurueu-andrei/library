@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-
 class OrderRepositoryImplTest extends BaseRepositoryTest {
-
     private final OrderRepositoryImpl orderRepository;
 
     public OrderRepositoryImplTest() {

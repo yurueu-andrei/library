@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 class BookCopyRepositoryImplTest extends BaseRepositoryTest {
-
     private final BookCopyRepositoryImpl bookCopyRepository;
 
     public BookCopyRepositoryImplTest() {
