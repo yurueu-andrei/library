@@ -145,10 +145,10 @@ public abstract class BaseRepositoryTest {
 
     private void fillBookDamage() {
         bookDamage = new ArrayList<>() {{
-            add(BookDamage.builder().id(1L).imagePath("image path").userId(1L).orderId(1L).bookCopyId(3L).build());
-            add(BookDamage.builder().id(2L).imagePath("image path").userId(1L).orderId(1L).bookCopyId(2L).build());
-            add(BookDamage.builder().id(3L).imagePath("image path").userId(3L).orderId(4L).bookCopyId(1L).build());
-            add(BookDamage.builder().id(4L).imagePath("image path").userId(4L).orderId(5L).bookCopyId(5L).build());
+            add(BookDamage.builder().id(1L).imagePath("image path").damageDescription("damage1").userId(1L).orderId(1L).bookCopyId(3L).build());
+            add(BookDamage.builder().id(2L).imagePath("image path").damageDescription("damage2").userId(1L).orderId(1L).bookCopyId(2L).build());
+            add(BookDamage.builder().id(3L).imagePath("image path").damageDescription("damage3").userId(3L).orderId(4L).bookCopyId(1L).build());
+            add(BookDamage.builder().id(4L).imagePath("image path").damageDescription("damage4").userId(4L).orderId(5L).bookCopyId(5L).build());
         }};
     }
 

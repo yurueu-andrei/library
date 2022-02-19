@@ -74,8 +74,8 @@ VALUES  (1, 1),
            (4, 2),
             (5, 4);
 
-INSERT INTO book_damage (image_path, user_id, order_id, book_copy_id)
-VALUES  ('image path', '1', '1', '3'),
- ('image path', '1', '1', '2'),
-  ('image path', '3', '4', '1'),
-   ('image path', '4', '5', '5');
+INSERT INTO book_damage (image_path, damage_description, user_id, order_id, book_copy_id)
+VALUES  ('image path', 'damage1', '1', '1', '3'),
+ ('image path', 'damage2', '1', '1', '2'),
+  ('image path', 'damage3', '3', '4', '1'),
+   ('image path', 'damage4', '4', '5', '5');

@@ -16,6 +16,7 @@ import lombok.ToString;
 public class BookDamage extends BaseEntity {
     private Long id;
     private String imagePath;
+    private String damageDescription;
     private Long userId;
     private Long orderId;
     private Long bookCopyId;

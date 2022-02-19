@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage> implements BookDamageRepository {
     private static final String ID_COLUMN = "id";
     private static final String IMAGE_PATH_COLUMN = "image_path";
+    private static final String DAMAGE_DESCRIPTION_COLUMN = "damage_description";
     private static final String USER_ID_COLUMN = "user_id";
     private static final String ORDER_ID_COLUMN = "order_id";
     private static final String BOOK_COPY_ID_COLUMN = "book_copy_id";
@@ -18,9 +19,9 @@ public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage>
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM book_damage WHERE id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM book_damage";
     private static final String INSERT_QUERY =
-            "INSERT INTO book_damage (image_path, user_id, order_id, book_copy_id) VALUES (?,?,?,?)";
+            "INSERT INTO book_damage (image_path, damage_description, user_id, order_id, book_copy_id) VALUES (?,?,?,?,?)";
     private static final String UPDATE_QUERY =
-            "UPDATE book_damage SET image_path=?, user_id=?, order_id=?, book_copy_id=? WHERE id=?";
+            "UPDATE book_damage SET image_path=?, damage_description=?, user_id=?, order_id=?, book_copy_id=? WHERE id=?";
     private static final String DELETE_QUERY = "DELETE FROM book_damage WHERE id=?";
 
     public BookDamageRepositoryImpl(DataSource dataSource) {
@@ -56,6 +57,7 @@ public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage>
         BookDamage bookDamage = new BookDamage();
         bookDamage.setId(resultSet.getLong(ID_COLUMN));
         bookDamage.setImagePath(resultSet.getString(IMAGE_PATH_COLUMN));
+        bookDamage.setDamageDescription(resultSet.getString(DAMAGE_DESCRIPTION_COLUMN));
         bookDamage.setUserId(resultSet.getLong(USER_ID_COLUMN));
         bookDamage.setOrderId(resultSet.getLong(ORDER_ID_COLUMN));
         bookDamage.setBookCopyId(resultSet.getLong(BOOK_COPY_ID_COLUMN));
@@ -64,8 +66,9 @@ public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage>
 
     protected void settingPreparedStatement(PreparedStatement preparedStatement, BookDamage bookDamage) throws SQLException {
         preparedStatement.setString(1, bookDamage.getImagePath());
-        preparedStatement.setLong(2, bookDamage.getUserId());
-        preparedStatement.setLong(3, bookDamage.getOrderId());
-        preparedStatement.setLong(4, bookDamage.getBookCopyId());
+        preparedStatement.setString(2, bookDamage.getDamageDescription());
+        preparedStatement.setLong(3, bookDamage.getUserId());
+        preparedStatement.setLong(4, bookDamage.getOrderId());
+        preparedStatement.setLong(5, bookDamage.getBookCopyId());
     }
 }
