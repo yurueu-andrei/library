@@ -2,7 +2,6 @@ package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.BookCopy;
 import by.library.yurueu.entity.BookCopyStatus;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.BookCopyRepository;
 
 import javax.sql.DataSource;
@@ -12,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 
-public class BookCopyRepositoryImpl extends AbstractRepositoryImpl<BookCopy> implements AbstractRepository<BookCopy>, BookCopyRepository {
+public class BookCopyRepositoryImpl extends AbstractRepositoryImpl<BookCopy> implements BookCopyRepository {
     private static final String ID_COLUMN = "id";
     private static final String BOOK_COPY_STATUS_COLUMN = "book_copy_status";
     private static final String REGISTRATION_DATE_COLUMN = "registration_date";

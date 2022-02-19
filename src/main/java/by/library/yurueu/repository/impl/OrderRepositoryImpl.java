@@ -2,7 +2,6 @@ package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Order;
 import by.library.yurueu.entity.OrderStatus;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.OrderRepository;
 
 import javax.sql.DataSource;
@@ -12,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 
-public class OrderRepositoryImpl extends AbstractRepositoryImpl<Order> implements AbstractRepository<Order>, OrderRepository {
+public class OrderRepositoryImpl extends AbstractRepositoryImpl<Order> implements OrderRepository {
     private static final String ID_COLUMN = "id";
     private static final String ORDER_STATUS_COLUMN = "order_status";
     private static final String START_DATE_COLUMN = "start_date";

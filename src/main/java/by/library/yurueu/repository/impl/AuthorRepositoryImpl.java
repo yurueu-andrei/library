@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Author;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.AuthorRepository;
 
 import javax.sql.DataSource;
@@ -11,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 
-public class AuthorRepositoryImpl extends AbstractRepositoryImpl<Author> implements AuthorRepository, AbstractRepository<Author> {
+public class AuthorRepositoryImpl extends AbstractRepositoryImpl<Author> implements AuthorRepository {
     private static final String FIRST_NAME_COLUMN = "first_name";
     private static final String LAST_NAME_COLUMN = "last_name";
     private static final String BIRTH_DATE_COLUMN = "birth_date";

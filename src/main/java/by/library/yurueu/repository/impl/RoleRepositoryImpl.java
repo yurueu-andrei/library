@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Role;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.RoleRepository;
 
 import javax.sql.DataSource;
@@ -10,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RoleRepositoryImpl extends AbstractRepositoryImpl<Role> implements AbstractRepository<Role>, RoleRepository {
+public class RoleRepositoryImpl extends AbstractRepositoryImpl<Role> implements RoleRepository {
     private static final String ID_COLUMN = "id";
     private static final String ROLE_NAME_COLUMN = "role_name";
 

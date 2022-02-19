@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Book;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.BookRepository;
 
 import javax.sql.DataSource;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookRepositoryImpl extends AbstractRepositoryImpl<Book> implements AbstractRepository<Book>, BookRepository {
+public class BookRepositoryImpl extends AbstractRepositoryImpl<Book> implements BookRepository {
     private static final String ID_COLUMN = "id";
     private static final String TITLE_COLUMN = "title";
     private static final String PAGES_COLUMN = "pages";

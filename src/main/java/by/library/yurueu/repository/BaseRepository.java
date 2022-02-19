@@ -4,7 +4,7 @@ import by.library.yurueu.exception.RepositoryException;
 
 import java.util.List;
 
-public interface AbstractRepository<E> {
+public interface BaseRepository<E> {
     E findById(Long id) throws RepositoryException;
     List<E> findAll() throws RepositoryException;
     E add(E element) throws RepositoryException;

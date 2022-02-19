@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Genre;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.GenreRepository;
 
 import javax.sql.DataSource;
@@ -10,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GenreRepositoryImpl extends AbstractRepositoryImpl<Genre> implements AbstractRepository<Genre>, GenreRepository {
+public class GenreRepositoryImpl extends AbstractRepositoryImpl<Genre> implements GenreRepository {
     private static final String ID_COLUMN = "id";
     private static final String GENRE_NAME_COLUMN = "genre_name";
 

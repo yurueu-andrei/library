@@ -1,16 +1,14 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.BookDamage;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.BookDamageRepository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage> implements AbstractRepository<BookDamage>, BookDamageRepository {
+public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage> implements BookDamageRepository {
     private static final String ID_COLUMN = "id";
     private static final String IMAGE_PATH_COLUMN = "image_path";
     private static final String USER_ID_COLUMN = "user_id";

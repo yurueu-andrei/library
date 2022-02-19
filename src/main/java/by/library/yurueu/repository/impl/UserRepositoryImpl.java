@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.User;
-import by.library.yurueu.repository.AbstractRepository;
 import by.library.yurueu.repository.UserRepository;
 
 import javax.sql.DataSource;
@@ -13,7 +12,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepositoryImpl extends AbstractRepositoryImpl<User> implements AbstractRepository<User>, UserRepository {
+public class UserRepositoryImpl extends AbstractRepositoryImpl<User> implements UserRepository {
     private static final String FIRST_NAME_COLUMN = "first_name";
     private static final String LAST_NAME_COLUMN = "last_name";
     private static final String PASSPORT_COLUMN = "passport";
