@@ -70,8 +70,4 @@ public class BookDamageRepositoryImpl extends AbstractRepositoryImpl<BookDamage>
         preparedStatement.setLong(3, bookDamage.getOrderId());
         preparedStatement.setLong(4, bookDamage.getBookCopyId());
     }
-
-    protected void deleteLinks(Connection connection, Long genreId) throws SQLException {
-
-    }
 }
