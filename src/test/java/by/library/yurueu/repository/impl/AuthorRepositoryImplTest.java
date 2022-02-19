@@ -44,8 +44,8 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedAuthor() throws RepositoryException {
         //given
-        Author expected = Author.builder().id(6L).firstName("afssd").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
-        Author actual = Author.builder().firstName("afssd").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
+        Author expected = Author.builder().id(6L).firstName("Mikhail").lastName("Lermontov").birthDate(LocalDate.of(1999, 8, 8)).imagePath("image path").build();
+        Author actual = Author.builder().firstName("Mikhail").lastName("Lermontov").birthDate(LocalDate.of(1999, 8, 8)).imagePath("image path").build();
 
         //when
         actual = authorRepository.add(actual);
@@ -58,7 +58,7 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateTest_shouldUpdateAuthor() throws RepositoryException {
         //given
-        Author author = Author.builder().id(2L).firstName("esdf").lastName("afssd").birthDate(LocalDate.of(1998, 8, 8)).imagePath("imagepath").build();
+        Author author = Author.builder().id(2L).firstName("Mikhail").lastName("Lermontov").birthDate(LocalDate.of(1998, 8, 8)).imagePath("image path").build();
 
         // when
         boolean isUpdated = authorRepository.update(author);

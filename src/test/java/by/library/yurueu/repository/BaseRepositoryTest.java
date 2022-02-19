@@ -59,8 +59,8 @@ public abstract class BaseRepositoryTest {
             add(User.builder().id(1L).firstName("vlad").lastName("kaliaha").passportNumber("1111").email("email1").address("address1").birthDate(LocalDate.of(2005, 6, 6)).build());
             add(User.builder().id(2L).firstName("andrei").lastName("yurueu").passportNumber("2222").email("email2").address("address2").birthDate(LocalDate.of(2001, 6, 6)).build());
             add(User.builder().id(3L).firstName("yaroslav").lastName("vasilevski").passportNumber("3333").email("email3").address("address3").birthDate(LocalDate.of(1998, 6, 6)).build());
-            add(User.builder().id(4L).firstName("nastya").lastName("yurkova").passportNumber("4444").email("email4").address("address4").birthDate(LocalDate.of(1999, 6, 6)).build());
-            add(User.builder().id(5L).firstName("alexander").lastName("kuprijanenko").passportNumber("5555").email("email5").address("address5").birthDate(LocalDate.of(1996, 6, 6)).build());
+            add(User.builder().id(4L).firstName("anastasiya").lastName("yurkova").passportNumber("4444").email("email4").address("address4").birthDate(LocalDate.of(1999, 6, 6)).build());
+            add(User.builder().id(5L).firstName("alexander").lastName("kupriyanenko").passportNumber("5555").email("email5").address("address5").birthDate(LocalDate.of(1996, 6, 6)).build());
         }};
     }
 
@@ -124,11 +124,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillBooks() {
         books = new ArrayList<>() {{
-            add(Book.builder().id(1L).title("War and peace").pagesNumber(1365).imagePath("imagepath").build());
-            add(Book.builder().id(2L).title("The Master and Margarita").pagesNumber(638).imagePath("imagepath").build());
-            add(Book.builder().id(3L).title("Idiot").pagesNumber(496).imagePath("imagepath").build());
-            add(Book.builder().id(4L).title("The old man and the sea").pagesNumber(153).imagePath("imagepath").build());
-            add(Book.builder().id(5L).title("Eugene Onegin").pagesNumber(462).imagePath("imagepath").build());
+            add(Book.builder().id(1L).title("War and peace").pagesNumber(1365).imagePath("image path").build());
+            add(Book.builder().id(2L).title("The Master and Margarita").pagesNumber(638).imagePath("image path").build());
+            add(Book.builder().id(3L).title("Idiot").pagesNumber(496).imagePath("image path").build());
+            add(Book.builder().id(4L).title("The old man and the sea").pagesNumber(153).imagePath("image path").build());
+            add(Book.builder().id(5L).title("Eugene Onegin").pagesNumber(462).imagePath("image path").build());
         }};
     }
 
@@ -142,10 +142,10 @@ public abstract class BaseRepositoryTest {
 
     private void fillBookDamage() {
         bookDamage = new ArrayList<>() {{
-            add(BookDamage.builder().id(1L).imagePath("imagepath").userId(1L).orderId(1L).bookCopyId(3L).build());
-            add(BookDamage.builder().id(2L).imagePath("imagepath").userId(1L).orderId(1L).bookCopyId(2L).build());
-            add(BookDamage.builder().id(3L).imagePath("imagepath").userId(3L).orderId(4L).bookCopyId(1L).build());
-            add(BookDamage.builder().id(4L).imagePath("imagepath").userId(4L).orderId(5L).bookCopyId(5L).build());
+            add(BookDamage.builder().id(1L).imagePath("image path").userId(1L).orderId(1L).bookCopyId(3L).build());
+            add(BookDamage.builder().id(2L).imagePath("image path").userId(1L).orderId(1L).bookCopyId(2L).build());
+            add(BookDamage.builder().id(3L).imagePath("image path").userId(3L).orderId(4L).bookCopyId(1L).build());
+            add(BookDamage.builder().id(4L).imagePath("image path").userId(4L).orderId(5L).bookCopyId(5L).build());
         }};
     }
 
@@ -177,11 +177,11 @@ public abstract class BaseRepositoryTest {
 
     private void fillAuthors() {
         authors = new ArrayList<>() {{
-            add(Author.builder().id(1L).firstName("Lev").lastName("Tolstoy").birthDate(LocalDate.of(1879, 4, 4)).imagePath("imagepath").build());
-            add(Author.builder().id(2L).firstName("Ernest").lastName("Hemingway").birthDate(LocalDate.of(1903, 7, 7)).imagePath("imagepath").build());
-            add(Author.builder().id(3L).firstName("Mikhail").lastName("Bulgakov").birthDate(LocalDate.of(1885, 10, 10)).imagePath("imagepath").build());
-            add(Author.builder().id(4L).firstName("Alexander").lastName("Pushkin").birthDate(LocalDate.of(1852, 2, 2)).imagePath("imagepath").build());
-            add(Author.builder().id(5L).firstName("Fedor").lastName("Dostoevski").birthDate(LocalDate.of(1845, 1, 1)).imagePath("imagepath").build());
+            add(Author.builder().id(1L).firstName("Lev").lastName("Tolstoy").birthDate(LocalDate.of(1879, 4, 4)).imagePath("image path").build());
+            add(Author.builder().id(2L).firstName("Ernest").lastName("Hemingway").birthDate(LocalDate.of(1903, 7, 7)).imagePath("image path").build());
+            add(Author.builder().id(3L).firstName("Mikhail").lastName("Bulgakov").birthDate(LocalDate.of(1885, 10, 10)).imagePath("image path").build());
+            add(Author.builder().id(4L).firstName("Alexander").lastName("Pushkin").birthDate(LocalDate.of(1852, 2, 2)).imagePath("image path").build());
+            add(Author.builder().id(5L).firstName("Fedor").lastName("Dostoevsky").birthDate(LocalDate.of(1845, 1, 1)).imagePath("image path").build());
         }};
     }
 

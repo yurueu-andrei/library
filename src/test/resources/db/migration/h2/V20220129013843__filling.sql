@@ -2,8 +2,8 @@ INSERT INTO users (first_name, last_name, passport, email, address, birth_date)
 VALUES ('vlad', 'kaliaha', '1111', 'email1', 'address1', '2005-06-06'),
  ('andrei', 'yurueu', '2222', 'email2', 'address2', '2001-06-06'),
   ('yaroslav', 'vasilevski', '3333', 'email3', 'address3', '1998-06-06'),
-   ('nastya', 'yurkova', '4444', 'email4', 'address4', '1999-06-06'),
-    ( 'alexander', 'kuprijanenko', '5555', 'email5', 'address5', '1996-06-06');
+   ('anastasiya', 'yurkova', '4444', 'email4', 'address4', '1999-06-06'),
+    ( 'alexander', 'kupriyanenko', '5555', 'email5', 'address5', '1996-06-06');
 
 INSERT INTO roles (role_name)
 VALUES ('admin'),
@@ -24,11 +24,11 @@ VALUES  ('NEW', '1998-06-06', '243', '1998-06-06','1'),
     ('NEW', '1998-06-06', '238', '1998-06-06', '4');
 
 INSERT INTO books (title, pages, image_path)
-VALUES  ('War and peace', '1365', 'imagepath'),
- ('The Master and Margarita', '638', 'imagepath'),
-  ('Idiot', '496', 'imagepath'),
-   ('The old man and the sea', '153', 'imagepath'),
-    ('Eugene Onegin', '462', 'imagepath');
+VALUES  ('War and peace', '1365', 'image path'),
+ ('The Master and Margarita', '638', 'image path'),
+  ('Idiot', '496', 'image path'),
+   ('The old man and the sea', '153', 'image path'),
+    ('Eugene Onegin', '462', 'image path');
 
 INSERT INTO book_copies (book_copy_status, registration_date, price, price_per_day, book_id)
 VALUES  ('AVAILABLE', '2019-03-01', '1365', '150', 1),
@@ -58,11 +58,11 @@ VALUES  (1, 3),
             (5, 2);
 
 INSERT INTO authors (first_name, last_name, birth_date, image_path)
-VALUES  ('Lev', 'Tolstoy', '1879-04-04', 'imagepath'),
- ('Ernest', 'Hemingway', '1903-07-07', 'imagepath'),
-  ('Mikhail', 'Bulgakov', '1885-10-10', 'imagepath'),
-   ('Alexander', 'Pushkin', '1852-02-02', 'imagepath'),
-    ('Fedor', 'Dostoevski', '1845-01-01', 'imagepath');
+VALUES  ('Lev', 'Tolstoy', '1879-04-04', 'image path'),
+ ('Ernest', 'Hemingway', '1903-07-07', 'image path'),
+  ('Mikhail', 'Bulgakov', '1885-10-10', 'image path'),
+   ('Alexander', 'Pushkin', '1852-02-02', 'image path'),
+    ('Fedor', 'Dostoevsky', '1845-01-01', 'image path');
 
 INSERT INTO book_author_links (book_id, author_id)
 VALUES  (1, 1),
@@ -72,7 +72,7 @@ VALUES  (1, 1),
             (5, 4);
 
 INSERT INTO book_damage (image_path, user_id, order_id, book_copy_id)
-VALUES  ('imagepath', '1', '1', '3'),
- ('imagepath', '1', '1', '2'),
-  ('imagepath', '3', '4', '1'),
-   ('imagepath', '4', '5', '5');
+VALUES  ('image path', '1', '1', '3'),
+ ('image path', '1', '1', '2'),
+  ('image path', '3', '4', '1'),
+   ('image path', '4', '5', '5');
