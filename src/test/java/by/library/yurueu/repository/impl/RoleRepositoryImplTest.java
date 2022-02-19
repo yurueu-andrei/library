@@ -42,25 +42,28 @@ class RoleRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedRole() throws RepositoryException {
         //given
-        Role expected = Role.builder().roleName("superUser").build();
+        Role expected = Role.builder().id(3L).roleName("superUser").build();
+        Role actual = Role.builder().roleName("superUser").build();
 
         //when
-        Role actual = roleRepository.add(expected);
+        actual = roleRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, roleRepository.findById(expected.getId()));
     }
 
     @Test
     void updateTest_shouldUpdateRole() throws RepositoryException {
         //given
-        Role role = Role.builder().id(2L).roleName("wrg").build();
+        Role role = Role.builder().id(2L).roleName("superUser").build();
 
         // when
         boolean isUpdated = roleRepository.update(role);
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(role, roleRepository.findById(role.getId()));
     }
 
     @Test

@@ -44,25 +44,28 @@ class AuthorRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedAuthor() throws RepositoryException {
         //given
-        Author expected = Author.builder().firstName("afssd").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
+        Author expected = Author.builder().id(6L).firstName("afssd").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
+        Author actual = Author.builder().firstName("afssd").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
 
         //when
-        Author actual = authorRepository.add(expected);
+        actual = authorRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, authorRepository.findById(expected.getId()));
     }
 
     @Test
     void updateTest_shouldUpdateAuthor() throws RepositoryException {
         //given
-        Author author = Author.builder().id(2L).firstName("esdf").lastName("afssd").birthDate(LocalDate.of(1999, 8, 8)).imagePath("imagepath").build();
+        Author author = Author.builder().id(2L).firstName("esdf").lastName("afssd").birthDate(LocalDate.of(1998, 8, 8)).imagePath("imagepath").build();
 
         // when
         boolean isUpdated = authorRepository.update(author);
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(author, authorRepository.findById(author.getId()));
     }
 
     @Test

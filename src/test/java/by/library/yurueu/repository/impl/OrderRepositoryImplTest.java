@@ -46,13 +46,15 @@ class OrderRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedOrder() throws RepositoryException {
         //given
-        Order expected = Order.builder().orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1999, 7, 6)).endDate(LocalDate.of(1988, 5, 6)).price(223).userId(4L).build();
+        Order expected = Order.builder().id(6L).orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1999, 7, 6)).endDate(LocalDate.of(1988, 5, 6)).price(223).userId(4L).build();
+        Order actual = Order.builder().orderStatus(OrderStatus.NEW).startDate(LocalDate.of(1999, 7, 6)).endDate(LocalDate.of(1988, 5, 6)).price(223).userId(4L).build();
 
         //when
-        Order actual = orderRepository.add(expected);
+        actual = orderRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, orderRepository.findById(expected.getId()));
     }
 
     @Test
@@ -65,6 +67,7 @@ class OrderRepositoryImplTest extends BaseRepositoryTest {
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(order, orderRepository.findById(order.getId()));
     }
 
     @Test

@@ -45,13 +45,15 @@ class BookCopyRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBookCopy() throws RepositoryException {
         //given
-        BookCopy expected = BookCopy.builder().status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2000, 1, 1)).price(70).pricePerDay(13).bookId(2L).build();
+        BookCopy expected = BookCopy.builder().id(6L).status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2000, 1, 1)).price(70).pricePerDay(13).bookId(2L).build();
+        BookCopy actual = BookCopy.builder().status(BookCopyStatus.AVAILABLE).registrationDate(LocalDate.of(2000, 1, 1)).price(70).pricePerDay(13).bookId(2L).build();
 
         //when
-        BookCopy actual = bookCopyRepository.add(expected);
+        actual = bookCopyRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, bookCopyRepository.findById(expected.getId()));
     }
 
     @Test
@@ -64,6 +66,7 @@ class BookCopyRepositoryImplTest extends BaseRepositoryTest {
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(bookCopy, bookCopyRepository.findById(bookCopy.getId()));
     }
 
     @Test

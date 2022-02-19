@@ -43,13 +43,15 @@ class UserRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedUser() throws RepositoryException {
         //given
-        User expected = User.builder().firstName("sergei").lastName("take").passportNumber("1645").email("email235").address("address123").birthDate(LocalDate.of(2002, 5, 5)).build();
+        User expected = User.builder().id(6L).firstName("sergei").lastName("take").passportNumber("1645").email("email235").address("address123").birthDate(LocalDate.of(2002, 5, 5)).build();
+        User actual = User.builder().firstName("sergei").lastName("take").passportNumber("1645").email("email235").address("address123").birthDate(LocalDate.of(2002, 5, 5)).build();
 
         //when
-        User actual = userRepository.add(expected);
+        actual = userRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, userRepository.findById(expected.getId()));
     }
 
     @Test
@@ -62,6 +64,7 @@ class UserRepositoryImplTest extends BaseRepositoryTest {
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(user, userRepository.findById(user.getId()));
     }
 
     @Test

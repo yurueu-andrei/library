@@ -43,25 +43,28 @@ class BookRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBook() throws RepositoryException {
         //given
-        Book expected = Book.builder().title("asd").pagesNumber(12).imagePath("imagepath").build();
+        Book expected = Book.builder().id(6L).title("asd").pagesNumber(12).imagePath("image path").build();
+        Book actual = Book.builder().title("asd").pagesNumber(12).imagePath("image path").build();
 
         //when
-        Book actual = bookRepository.add(expected);
+        actual = bookRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, bookRepository.findById(expected.getId()));
     }
 
     @Test
     void updateTest_shouldUpdateBook() throws RepositoryException {
         //given
-        Book book = Book.builder().id(2L).title("asd").pagesNumber(12).imagePath("imagepath").build();
+        Book book = Book.builder().id(2L).title("Hello").pagesNumber(12).imagePath("image path").build();
 
         // when
         boolean isUpdated = bookRepository.update(book);
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(book, bookRepository.findById(book.getId()));
     }
 
     @Test

@@ -44,13 +44,15 @@ class GenreRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedGenre() throws RepositoryException {
         //given
-        Genre expected = Genre.builder().genreName("tale").build();
+        Genre expected = Genre.builder().id(5L).genreName("tale").build();
+        Genre actual = Genre.builder().genreName("tale").build();
 
         //when
-        Genre actual = genreRepository.add(expected);
+        actual = genreRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, genreRepository.findById(expected.getId()));
     }
 
     @Test
@@ -63,6 +65,7 @@ class GenreRepositoryImplTest extends BaseRepositoryTest {
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(genre, genreRepository.findById(genre.getId()));
     }
 
     @Test

@@ -43,25 +43,28 @@ class BookDamageRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void addTest_shouldReturnAddedBookDamage() throws RepositoryException {
         //given
-        BookDamage expected = BookDamage.builder().imagePath("imagepath").userId(1L).orderId(2L).bookCopyId(3L).build();
+        BookDamage expected = BookDamage.builder().id(5L).imagePath("image path").userId(1L).orderId(2L).bookCopyId(3L).build();
+        BookDamage actual = BookDamage.builder().imagePath("image path").userId(1L).orderId(2L).bookCopyId(3L).build();
 
         //when
-        BookDamage actual = bookDamageRepository.add(expected);
+        actual = bookDamageRepository.add(actual);
 
         //then
         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, bookDamageRepository.findById(expected.getId()));
     }
 
     @Test
     void updateTest_shouldUpdateBookDamage() throws RepositoryException {
         //given
-        BookDamage bookDamage = BookDamage.builder().id(2L).imagePath("imagepath").userId(1L).orderId(2L).bookCopyId(3L).build();
+        BookDamage bookDamage = BookDamage.builder().id(2L).imagePath("image path").userId(1L).orderId(2L).bookCopyId(3L).build();
 
         // when
         boolean isUpdated = bookDamageRepository.update(bookDamage);
 
         //then
         Assertions.assertTrue(isUpdated);
+        Assertions.assertEquals(bookDamage, bookDamageRepository.findById(bookDamage.getId()));
     }
 
     @Test
