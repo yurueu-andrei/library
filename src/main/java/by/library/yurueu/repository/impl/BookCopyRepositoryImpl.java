@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.BookCopy;
-import by.library.yurueu.entity.BookCopyStatus;
 import by.library.yurueu.repository.BookCopyRepository;
 
 import javax.sql.DataSource;
@@ -62,7 +61,7 @@ public class BookCopyRepositoryImpl extends AbstractRepositoryImpl<BookCopy> imp
     protected BookCopy construct(ResultSet resultSet) throws SQLException {
         BookCopy bookCopy = new BookCopy();
         bookCopy.setId(resultSet.getLong(ID_COLUMN));
-        bookCopy.setStatus(BookCopyStatus.valueOf(resultSet.getString(BOOK_COPY_STATUS_COLUMN)));
+        bookCopy.setStatus(resultSet.getString(BOOK_COPY_STATUS_COLUMN));
         bookCopy.setRegistrationDate(resultSet.getDate(REGISTRATION_DATE_COLUMN).toLocalDate());
         bookCopy.setPrice(resultSet.getInt(PRICE_COLUMN));
         bookCopy.setPricePerDay(resultSet.getInt(PRICE_PER_DAY_COLUMN));

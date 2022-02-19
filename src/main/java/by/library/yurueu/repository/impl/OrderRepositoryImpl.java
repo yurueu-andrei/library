@@ -1,7 +1,6 @@
 package by.library.yurueu.repository.impl;
 
 import by.library.yurueu.entity.Order;
-import by.library.yurueu.entity.OrderStatus;
 import by.library.yurueu.repository.OrderRepository;
 
 import javax.sql.DataSource;
@@ -62,7 +61,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl<Order> implement
     protected Order construct(ResultSet resultSet) throws SQLException {
         Order order = new Order();
         order.setId(resultSet.getLong(ID_COLUMN));
-        order.setOrderStatus(OrderStatus.valueOf(resultSet.getString(ORDER_STATUS_COLUMN)));
+        order.setOrderStatus(resultSet.getString(ORDER_STATUS_COLUMN));
         order.setStartDate(resultSet.getDate(START_DATE_COLUMN).toLocalDate());
         order.setEndDate(resultSet.getDate(END_DATE_COLUMN).toLocalDate());
         order.setPrice(resultSet.getInt(PRICE_COLUMN));
