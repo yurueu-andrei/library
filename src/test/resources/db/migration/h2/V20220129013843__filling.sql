@@ -45,10 +45,13 @@ VALUES  (1, 3),
             (5, 5);
 
 INSERT INTO genres (genre_name)
-VALUES ('novel'),
-        ('novel in verse'),
-         ('epic novel'),
-          ('story');
+VALUES ('NOVEL'),
+        ('ADVENTURE'),
+        ('COMEDY'),
+        ('CRIME'),
+        ('HORROR'),
+        ('SCIENCE FICTION'),
+        ('ROMANCE');
 
 INSERT INTO book_genre_links (book_id, genre_id)
 VALUES  (1, 3),
